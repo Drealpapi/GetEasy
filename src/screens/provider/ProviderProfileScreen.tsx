@@ -1,0 +1,604 @@
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  Alert,
+} from "react-native";
+import { useDemoAuth } from "../../context/DemoAuthContext";
+import { COLORS, SPACING, FONT_SIZE, SERVICE_CATEGORIES } from "../../utils/constants";
+import { getAllUSStates, getCitiesByState } from "../../utils/usStatesData";
+
+export default function ProviderProfileScreen() {
+  const { currentUser } = useDemoAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  
+  // Profile data
+  const [businessName, setBusinessName] = useState("Pro Services LLC");
+  const [description, setDescription] = useState("Professional service provider with 10+ years of experience");
+  const [phone, setPhone] = useState("(555) 123-4567");
+  const [email, setEmail] = useState(currentUser?.email || "provider@example.com");
+  const [selectedState, setSelectedState] = useState("California");
+  const [selectedCity, setSelectedCity] = useState("Los Angeles");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(["Electricians", "Plumbers"]);
+  const [yearsExperience, setYearsExperience] = useState("10");
+  const [hourlyRate, setHourlyRate] = useState("75");
+  const [showStateSelector, setShowStateSelector] = useState(false);
+  const [showCitySelector, setShowCitySelector] = useState(false);
+
+  const allStates = getAllUSStates();
+  const cities = getCitiesByState(selectedState);
+
+  const toggleCategory = (category: string) => {
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter(c => c !== category));
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const handleSave = () => {
+    Alert.alert("Success", "Profile updated successfully!");
+    setIsEditing(false);
+  };
+
+  const stats = [
+    { label: "Completed Jobs", value: "247", icon: "✅" },
+    { label: "Rating", value: "4.8", icon: "⭐" },
+    { label: "Response Time", value: "< 2hrs", icon: "⚡" },
+    { label: "Active Services", value: "12", icon: "🛠️" },
+  ];
+
+  return (
+    <ScrollView style={styles.container}>
+      {/* Header Card */}
+      <View style={styles.headerCard}>
+        <View style={styles.avatarContainer}>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>
+              {businessName.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          {isEditing && (
+            <TouchableOpacity style={styles.editAvatarButton}>
+              <Text style={styles.editAvatarText}>📷</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+        
+        {isEditing ? (
+          <TextInput
+            style={styles.businessNameInput}
+            value={businessName}
+            onChangeText={setBusinessName}
+            placeholder="Business Name"
+          />
+        ) : (
+          <Text style={styles.businessName}>{businessName}</Text>
+        )}
+        
+        <View style={styles.locationBadge}>
+          <Text style={styles.locationText}>
+            📍 {selectedCity}, {selectedState}
+          </Text>
+        </View>
+      </View>
+
+      {/* Stats Grid */}
+      <View style={styles.statsContainer}>
+        {stats.map((stat, index) => (
+          <View key={index} style={styles.statCard}>
+            <Text style={styles.statIcon}>{stat.icon}</Text>
+            <Text style={styles.statValue}>{stat.value}</Text>
+            <Text style={styles.statLabel}>{stat.label}</Text>
+          </View>
+        ))}
+      </View>
+
+      {/* Edit Button */}
+      {!isEditing && (
+        <TouchableOpacity style={styles.editButton} onPress={() => setIsEditing(true)}>
+          <Text style={styles.editButtonText}>✏️ Edit Profile</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* About Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📋 About</Text>
+        {isEditing ? (
+          <TextInput
+            style={styles.descriptionInput}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Describe your business..."
+            multiline
+            numberOfLines={4}
+          />
+        ) : (
+          <Text style={styles.description}>{description}</Text>
+        )}
+      </View>
+
+      {/* Service Categories */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>🔧 Service Categories</Text>
+        <View style={styles.categoriesGrid}>
+          {SERVICE_CATEGORIES.map((category) => (
+            <TouchableOpacity
+              key={category}
+              style={[
+                styles.categoryChip,
+                selectedCategories.includes(category) && styles.categoryChipActive,
+                !isEditing && styles.categoryChipDisabled,
+              ]}
+              onPress={() => isEditing && toggleCategory(category)}
+              disabled={!isEditing}
+            >
+              <Text
+                style={[
+                  styles.categoryChipText,
+                  selectedCategories.includes(category) && styles.categoryChipTextActive,
+                ]}
+              >
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      {/* Location */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📍 Service Location</Text>
+        
+        {/* State Selector */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>State</Text>
+          {isEditing ? (
+            <>
+              <TouchableOpacity
+                style={styles.selectButton}
+                onPress={() => setShowStateSelector(!showStateSelector)}
+              >
+                <Text style={styles.selectButtonText}>{selectedState}</Text>
+                <Text style={styles.selectButtonArrow}>▼</Text>
+              </TouchableOpacity>
+              {showStateSelector && (
+                <ScrollView style={styles.dropdown} nestedScrollEnabled>
+                  {allStates.map((state) => (
+                    <TouchableOpacity
+                      key={state}
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedState(state);
+                        setSelectedCity(getCitiesByState(state)[0] || "");
+                        setShowStateSelector(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownItemText}>{state}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
+            </>
+          ) : (
+            <Text style={styles.inputValue}>{selectedState}</Text>
+          )}
+        </View>
+
+        {/* City Selector */}
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>City</Text>
+          {isEditing ? (
+            <>
+              <TouchableOpacity
+                style={styles.selectButton}
+                onPress={() => setShowCitySelector(!showCitySelector)}
+              >
+                <Text style={styles.selectButtonText}>{selectedCity}</Text>
+                <Text style={styles.selectButtonArrow}>▼</Text>
+              </TouchableOpacity>
+              {showCitySelector && (
+                <ScrollView style={styles.dropdown} nestedScrollEnabled>
+                  {cities.map((city) => (
+                    <TouchableOpacity
+                      key={city}
+                      style={styles.dropdownItem}
+                      onPress={() => {
+                        setSelectedCity(city);
+                        setShowCitySelector(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownItemText}>{city}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
+            </>
+          ) : (
+            <Text style={styles.inputValue}>{selectedCity}</Text>
+          )}
+        </View>
+      </View>
+
+      {/* Contact Information */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📞 Contact Information</Text>
+        
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Phone</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="Phone number"
+              keyboardType="phone-pad"
+            />
+          ) : (
+            <Text style={styles.inputValue}>{phone}</Text>
+          )}
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Email</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Email address"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+          ) : (
+            <Text style={styles.inputValue}>{email}</Text>
+          )}
+        </View>
+      </View>
+
+      {/* Professional Details */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>💼 Professional Details</Text>
+        
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Years of Experience</Text>
+          {isEditing ? (
+            <TextInput
+              style={styles.input}
+              value={yearsExperience}
+              onChangeText={setYearsExperience}
+              placeholder="Years"
+              keyboardType="numeric"
+            />
+          ) : (
+            <Text style={styles.inputValue}>{yearsExperience} years</Text>
+          )}
+        </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Hourly Rate</Text>
+          {isEditing ? (
+            <View style={styles.rateInputContainer}>
+              <Text style={styles.dollarSign}>$</Text>
+              <TextInput
+                style={styles.rateInput}
+                value={hourlyRate}
+                onChangeText={setHourlyRate}
+                placeholder="0"
+                keyboardType="numeric"
+              />
+              <Text style={styles.perHour}>/hr</Text>
+            </View>
+          ) : (
+            <Text style={styles.inputValue}>${hourlyRate}/hr</Text>
+          )}
+        </View>
+      </View>
+
+      {/* Save/Cancel Buttons */}
+      {isEditing && (
+        <View style={styles.actionButtons}>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => setIsEditing(false)}
+          >
+            <Text style={styles.cancelButtonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>💾 Save Changes</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <View style={styles.bottomSpacer} />
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.LIGHT_GRAY,
+  },
+  headerCard: {
+    backgroundColor: COLORS.WHITE,
+    padding: SPACING.xl,
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.LIGHT_GRAY,
+  },
+  avatarContainer: {
+    position: "relative",
+    marginBottom: SPACING.md,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: COLORS.EMERALD_GREEN,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  avatarText: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: COLORS.WHITE,
+  },
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: COLORS.EMERALD_GREEN,
+  },
+  editAvatarText: {
+    fontSize: 14,
+  },
+  businessName: {
+    fontSize: FONT_SIZE.xxl,
+    fontWeight: "bold",
+    color: COLORS.BLACK,
+    marginBottom: SPACING.sm,
+  },
+  businessNameInput: {
+    fontSize: FONT_SIZE.xxl,
+    fontWeight: "bold",
+    color: COLORS.BLACK,
+    marginBottom: SPACING.sm,
+    borderBottomWidth: 2,
+    borderBottomColor: COLORS.EMERALD_GREEN,
+    paddingVertical: 4,
+    textAlign: "center",
+  },
+  locationBadge: {
+    backgroundColor: COLORS.EMERALD_GREEN,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: 20,
+  },
+  locationText: {
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "600",
+  },
+  statsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: SPACING.md,
+    gap: SPACING.md,
+  },
+  statCard: {
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 12,
+    padding: SPACING.md,
+    width: "47%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statIcon: {
+    fontSize: 32,
+    marginBottom: SPACING.sm,
+  },
+  statValue: {
+    fontSize: FONT_SIZE.xl,
+    fontWeight: "bold",
+    color: COLORS.BLACK,
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: FONT_SIZE.xs,
+    color: COLORS.GRAY,
+    textAlign: "center",
+  },
+  editButton: {
+    backgroundColor: COLORS.EMERALD_GREEN,
+    marginHorizontal: SPACING.md,
+    paddingVertical: SPACING.md,
+    borderRadius: 12,
+    alignItems: "center",
+    marginBottom: SPACING.md,
+  },
+  editButtonText: {
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: "bold",
+  },
+  section: {
+    backgroundColor: COLORS.WHITE,
+    padding: SPACING.lg,
+    marginBottom: SPACING.md,
+  },
+  sectionTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontWeight: "bold",
+    color: COLORS.BLACK,
+    marginBottom: SPACING.md,
+  },
+  description: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.GRAY,
+    lineHeight: 22,
+  },
+  descriptionInput: {
+    backgroundColor: COLORS.LIGHT_GRAY,
+    borderRadius: 8,
+    padding: SPACING.md,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+    minHeight: 100,
+    textAlignVertical: "top",
+  },
+  categoriesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: SPACING.sm,
+  },
+  categoryChip: {
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: 20,
+    backgroundColor: COLORS.LIGHT_GRAY,
+    borderWidth: 2,
+    borderColor: COLORS.LIGHT_GRAY,
+  },
+  categoryChipActive: {
+    backgroundColor: COLORS.EMERALD_GREEN,
+    borderColor: COLORS.EMERALD_GREEN,
+  },
+  categoryChipDisabled: {
+    opacity: 0.7,
+  },
+  categoryChipText: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.GRAY,
+    fontWeight: "600",
+  },
+  categoryChipTextActive: {
+    color: COLORS.WHITE,
+  },
+  inputGroup: {
+    marginBottom: SPACING.md,
+  },
+  inputLabel: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.GRAY,
+    marginBottom: SPACING.sm,
+    fontWeight: "600",
+  },
+  input: {
+    backgroundColor: COLORS.LIGHT_GRAY,
+    borderRadius: 8,
+    padding: SPACING.md,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+  },
+  inputValue: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+    paddingVertical: SPACING.sm,
+  },
+  selectButton: {
+    backgroundColor: COLORS.LIGHT_GRAY,
+    borderRadius: 8,
+    padding: SPACING.md,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  selectButtonText: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+  },
+  selectButtonArrow: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.GRAY,
+  },
+  dropdown: {
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 8,
+    marginTop: SPACING.sm,
+    maxHeight: 200,
+    borderWidth: 1,
+    borderColor: COLORS.LIGHT_GRAY,
+  },
+  dropdownItem: {
+    padding: SPACING.md,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.LIGHT_GRAY,
+  },
+  dropdownItemText: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+  },
+  rateInputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.LIGHT_GRAY,
+    borderRadius: 8,
+    paddingHorizontal: SPACING.md,
+  },
+  dollarSign: {
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.BLACK,
+    fontWeight: "bold",
+    marginRight: SPACING.sm,
+  },
+  rateInput: {
+    flex: 1,
+    padding: SPACING.md,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.BLACK,
+  },
+  perHour: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.GRAY,
+    marginLeft: SPACING.sm,
+  },
+  actionButtons: {
+    flexDirection: "row",
+    padding: SPACING.md,
+    gap: SPACING.md,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: COLORS.LIGHT_GRAY,
+    paddingVertical: SPACING.md,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  cancelButtonText: {
+    color: COLORS.GRAY,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: "bold",
+  },
+  saveButton: {
+    flex: 1,
+    backgroundColor: COLORS.EMERALD_GREEN,
+    paddingVertical: SPACING.md,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  saveButtonText: {
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: "bold",
+  },
+  bottomSpacer: {
+    height: SPACING.xl,
+  },
+});
