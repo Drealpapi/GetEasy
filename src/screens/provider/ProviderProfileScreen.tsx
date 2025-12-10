@@ -9,12 +9,15 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { useDemoAuth } from "../../context/DemoAuthContext";
-import { COLORS, SPACING, FONT_SIZE, SERVICE_CATEGORIES } from "../../utils/constants";
+import { useAuth } from "../../context/AuthContext";
+import { useTheme, SPACING, FONT_SIZE } from "../../context/ThemeContext";
+import { SERVICE_CATEGORIES } from "../../utils/constants";
 import { getAllUSStates, getCitiesByState } from "../../utils/usStatesData";
+import ThemeToggle from "../../components/common/ThemeToggle";
 
 export default function ProviderProfileScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
+  const { colors } = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   
   // Profile data
@@ -52,6 +55,302 @@ export default function ProviderProfileScreen() {
     { label: "Response Time", value: "< 2hrs", icon: "⚡" },
     { label: "Active Services", value: "12", icon: "🛠️" },
   ];
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.SURFACE,
+    },
+    headerCard: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      padding: SPACING.xl,
+      alignItems: "center",
+      borderBottomWidth: 1,
+      borderBottomColor: colors.BORDER,
+    },
+    avatarContainer: {
+      position: "relative",
+      marginBottom: SPACING.md,
+    },
+    avatar: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+      backgroundColor: colors.PRIMARY,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    avatarText: {
+      fontSize: 40,
+      fontWeight: "bold",
+      color: colors.BACKGROUND,
+    },
+    editAvatarButton: {
+      position: "absolute",
+      bottom: 0,
+      right: 0,
+      backgroundColor: colors.CARD_BACKGROUND,
+      borderRadius: 15,
+      width: 30,
+      height: 30,
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 2,
+      borderColor: colors.PRIMARY,
+    },
+    editAvatarText: {
+      fontSize: 14,
+    },
+    businessName: {
+      fontSize: FONT_SIZE.xxl,
+      fontWeight: "bold",
+      color: colors.TEXT_PRIMARY,
+      marginBottom: SPACING.sm,
+    },
+    businessNameInput: {
+      fontSize: FONT_SIZE.xxl,
+      fontWeight: "bold",
+      color: colors.TEXT_PRIMARY,
+      marginBottom: SPACING.sm,
+      borderBottomWidth: 2,
+      borderBottomColor: colors.PRIMARY,
+      paddingVertical: 4,
+      textAlign: "center",
+    },
+    locationBadge: {
+      backgroundColor: colors.PRIMARY,
+      paddingHorizontal: SPACING.md,
+      paddingVertical: SPACING.sm,
+      borderRadius: 20,
+    },
+    locationText: {
+      color: colors.BACKGROUND,
+      fontSize: FONT_SIZE.sm,
+      fontWeight: "600",
+    },
+    statsContainer: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      padding: SPACING.md,
+      gap: SPACING.md,
+    },
+    statCard: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      borderRadius: 12,
+      padding: SPACING.md,
+      width: "47%",
+      alignItems: "center",
+      shadowColor: colors.SHADOW,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    statIcon: {
+      fontSize: 32,
+      marginBottom: SPACING.sm,
+    },
+    statValue: {
+      fontSize: FONT_SIZE.xl,
+      fontWeight: "bold",
+      color: colors.TEXT_PRIMARY,
+      marginBottom: 4,
+    },
+    statLabel: {
+      fontSize: FONT_SIZE.xs,
+      color: colors.TEXT_SECONDARY,
+      textAlign: "center",
+    },
+    editButton: {
+      backgroundColor: colors.PRIMARY,
+      marginHorizontal: SPACING.md,
+      paddingVertical: SPACING.md,
+      borderRadius: 12,
+      alignItems: "center",
+      marginBottom: SPACING.md,
+    },
+    editButtonText: {
+      color: colors.BACKGROUND,
+      fontSize: FONT_SIZE.lg,
+      fontWeight: "bold",
+    },
+    section: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      padding: SPACING.lg,
+      marginBottom: SPACING.md,
+    },
+    sectionTitle: {
+      fontSize: FONT_SIZE.lg,
+      fontWeight: "bold",
+      color: colors.TEXT_PRIMARY,
+      marginBottom: SPACING.md,
+    },
+    description: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_SECONDARY,
+      lineHeight: 22,
+    },
+    descriptionInput: {
+      backgroundColor: colors.INPUT_BACKGROUND,
+      borderRadius: 8,
+      padding: SPACING.md,
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+      minHeight: 100,
+      textAlignVertical: "top",
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    categoriesGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: SPACING.sm,
+    },
+    categoryChip: {
+      paddingHorizontal: SPACING.md,
+      paddingVertical: SPACING.sm,
+      borderRadius: 20,
+      backgroundColor: colors.SURFACE,
+      borderWidth: 2,
+      borderColor: colors.BORDER,
+    },
+    categoryChipActive: {
+      backgroundColor: colors.PRIMARY,
+      borderColor: colors.PRIMARY,
+    },
+    categoryChipDisabled: {
+      opacity: 0.7,
+    },
+    categoryChipText: {
+      fontSize: FONT_SIZE.sm,
+      color: colors.TEXT_SECONDARY,
+      fontWeight: "600",
+    },
+    categoryChipTextActive: {
+      color: colors.BACKGROUND,
+    },
+    inputGroup: {
+      marginBottom: SPACING.md,
+    },
+    inputLabel: {
+      fontSize: FONT_SIZE.sm,
+      color: colors.TEXT_SECONDARY,
+      marginBottom: SPACING.sm,
+      fontWeight: "600",
+    },
+    input: {
+      backgroundColor: colors.INPUT_BACKGROUND,
+      borderRadius: 8,
+      padding: SPACING.md,
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    inputValue: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+      paddingVertical: SPACING.sm,
+    },
+    selectButton: {
+      backgroundColor: colors.INPUT_BACKGROUND,
+      borderRadius: 8,
+      padding: SPACING.md,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    selectButtonText: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+    },
+    selectButtonArrow: {
+      fontSize: FONT_SIZE.sm,
+      color: colors.TEXT_SECONDARY,
+    },
+    dropdown: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      borderRadius: 8,
+      marginTop: SPACING.sm,
+      maxHeight: 200,
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    dropdownItem: {
+      padding: SPACING.md,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.BORDER,
+    },
+    dropdownItemText: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+    },
+    rateInputContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.INPUT_BACKGROUND,
+      borderRadius: 8,
+      paddingHorizontal: SPACING.md,
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    dollarSign: {
+      fontSize: FONT_SIZE.lg,
+      color: colors.TEXT_PRIMARY,
+      fontWeight: "bold",
+      marginRight: SPACING.sm,
+    },
+    rateInput: {
+      flex: 1,
+      padding: SPACING.md,
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+    },
+    perHour: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_SECONDARY,
+      marginLeft: SPACING.sm,
+    },
+    themeToggleContainer: {
+      paddingVertical: SPACING.sm,
+    },
+    actionButtons: {
+      flexDirection: "row",
+      padding: SPACING.md,
+      gap: SPACING.md,
+    },
+    cancelButton: {
+      flex: 1,
+      backgroundColor: colors.SURFACE,
+      paddingVertical: SPACING.md,
+      borderRadius: 12,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.BORDER,
+    },
+    cancelButtonText: {
+      color: colors.TEXT_SECONDARY,
+      fontSize: FONT_SIZE.lg,
+      fontWeight: "bold",
+    },
+    saveButton: {
+      flex: 1,
+      backgroundColor: colors.PRIMARY,
+      paddingVertical: SPACING.md,
+      borderRadius: 12,
+      alignItems: "center",
+    },
+    saveButtonText: {
+      color: colors.BACKGROUND,
+      fontSize: FONT_SIZE.lg,
+      fontWeight: "bold",
+    },
+    bottomSpacer: {
+      height: SPACING.xl,
+    },
+  });
 
   return (
     <ScrollView style={styles.container}>
@@ -298,6 +597,13 @@ export default function ProviderProfileScreen() {
             <Text style={styles.inputValue}>${hourlyRate}/hr</Text>
           )}
         </View>
+
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Theme</Text>
+          <View style={styles.themeToggleContainer}>
+            <ThemeToggle showLabel={true} size="medium" />
+          </View>
+        </View>
       </View>
 
       {/* Save/Cancel Buttons */}
@@ -319,286 +625,3 @@ export default function ProviderProfileScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
-  },
-  headerCard: {
-    backgroundColor: COLORS.WHITE,
-    padding: SPACING.xl,
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
-  },
-  avatarContainer: {
-    position: "relative",
-    marginBottom: SPACING.md,
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: COLORS.EMERALD_GREEN,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatarText: {
-    fontSize: 40,
-    fontWeight: "bold",
-    color: COLORS.WHITE,
-  },
-  editAvatarButton: {
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    backgroundColor: COLORS.WHITE,
-    borderRadius: 15,
-    width: 30,
-    height: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 2,
-    borderColor: COLORS.EMERALD_GREEN,
-  },
-  editAvatarText: {
-    fontSize: 14,
-  },
-  businessName: {
-    fontSize: FONT_SIZE.xxl,
-    fontWeight: "bold",
-    color: COLORS.BLACK,
-    marginBottom: SPACING.sm,
-  },
-  businessNameInput: {
-    fontSize: FONT_SIZE.xxl,
-    fontWeight: "bold",
-    color: COLORS.BLACK,
-    marginBottom: SPACING.sm,
-    borderBottomWidth: 2,
-    borderBottomColor: COLORS.EMERALD_GREEN,
-    paddingVertical: 4,
-    textAlign: "center",
-  },
-  locationBadge: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: 20,
-  },
-  locationText: {
-    color: COLORS.WHITE,
-    fontSize: FONT_SIZE.sm,
-    fontWeight: "600",
-  },
-  statsContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    padding: SPACING.md,
-    gap: SPACING.md,
-  },
-  statCard: {
-    backgroundColor: COLORS.WHITE,
-    borderRadius: 12,
-    padding: SPACING.md,
-    width: "47%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  statIcon: {
-    fontSize: 32,
-    marginBottom: SPACING.sm,
-  },
-  statValue: {
-    fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
-    color: COLORS.BLACK,
-    marginBottom: 4,
-  },
-  statLabel: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.GRAY,
-    textAlign: "center",
-  },
-  editButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    marginHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    borderRadius: 12,
-    alignItems: "center",
-    marginBottom: SPACING.md,
-  },
-  editButtonText: {
-    color: COLORS.WHITE,
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
-  },
-  section: {
-    backgroundColor: COLORS.WHITE,
-    padding: SPACING.lg,
-    marginBottom: SPACING.md,
-  },
-  sectionTitle: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
-    color: COLORS.BLACK,
-    marginBottom: SPACING.md,
-  },
-  description: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
-    lineHeight: 22,
-  },
-  descriptionInput: {
-    backgroundColor: COLORS.LIGHT_GRAY,
-    borderRadius: 8,
-    padding: SPACING.md,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-    minHeight: 100,
-    textAlignVertical: "top",
-  },
-  categoriesGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: SPACING.sm,
-  },
-  categoryChip: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: 20,
-    backgroundColor: COLORS.LIGHT_GRAY,
-    borderWidth: 2,
-    borderColor: COLORS.LIGHT_GRAY,
-  },
-  categoryChipActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    borderColor: COLORS.EMERALD_GREEN,
-  },
-  categoryChipDisabled: {
-    opacity: 0.7,
-  },
-  categoryChipText: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
-    fontWeight: "600",
-  },
-  categoryChipTextActive: {
-    color: COLORS.WHITE,
-  },
-  inputGroup: {
-    marginBottom: SPACING.md,
-  },
-  inputLabel: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
-    marginBottom: SPACING.sm,
-    fontWeight: "600",
-  },
-  input: {
-    backgroundColor: COLORS.LIGHT_GRAY,
-    borderRadius: 8,
-    padding: SPACING.md,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-  },
-  inputValue: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-    paddingVertical: SPACING.sm,
-  },
-  selectButton: {
-    backgroundColor: COLORS.LIGHT_GRAY,
-    borderRadius: 8,
-    padding: SPACING.md,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  selectButtonText: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-  },
-  selectButtonArrow: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
-  },
-  dropdown: {
-    backgroundColor: COLORS.WHITE,
-    borderRadius: 8,
-    marginTop: SPACING.sm,
-    maxHeight: 200,
-    borderWidth: 1,
-    borderColor: COLORS.LIGHT_GRAY,
-  },
-  dropdownItem: {
-    padding: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
-  },
-  dropdownItemText: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-  },
-  rateInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: COLORS.LIGHT_GRAY,
-    borderRadius: 8,
-    paddingHorizontal: SPACING.md,
-  },
-  dollarSign: {
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.BLACK,
-    fontWeight: "bold",
-    marginRight: SPACING.sm,
-  },
-  rateInput: {
-    flex: 1,
-    padding: SPACING.md,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-  },
-  perHour: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
-    marginLeft: SPACING.sm,
-  },
-  actionButtons: {
-    flexDirection: "row",
-    padding: SPACING.md,
-    gap: SPACING.md,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
-    paddingVertical: SPACING.md,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  cancelButtonText: {
-    color: COLORS.GRAY,
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
-  },
-  saveButton: {
-    flex: 1,
-    backgroundColor: COLORS.EMERALD_GREEN,
-    paddingVertical: SPACING.md,
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  saveButtonText: {
-    color: COLORS.WHITE,
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
-  },
-  bottomSpacer: {
-    height: SPACING.xl,
-  },
-});

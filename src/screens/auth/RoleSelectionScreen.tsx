@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useTheme, SPACING, FONT_SIZE } from "../../context/ThemeContext";
 import ThemeToggle from "../../components/common/ThemeToggle";
 
-interface LoginScreenProps {
+interface RoleSelectionScreenProps {
   navigation: any;
 }
 
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+export default function RoleSelectionScreen({ navigation }: RoleSelectionScreenProps) {
   const { colors } = useTheme();
 
   const handleUserLogin = () => {

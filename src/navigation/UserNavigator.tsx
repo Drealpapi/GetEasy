@@ -10,7 +10,7 @@ import BookingDetailScreen from "../screens/user/BookingDetailScreen";
 import AddReviewScreen from "../screens/user/AddReviewScreen";
 import ProfileScreen from "../screens/user/Profile/ProfileScreen";
 import LocationSearchScreen from "../screens/user/LocationSearchScreen";
-import { COLORS } from "../utils/constants";
+import { useTheme } from "../context/ThemeContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,12 +60,18 @@ function BookingsStack() {
 }
 
 export default function UserNavigator() {
+  const { colors } = useTheme();
+  
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: COLORS.EMERALD_GREEN,
-        tabBarInactiveTintColor: COLORS.GRAY,
+        tabBarActiveTintColor: colors.PRIMARY,
+        tabBarInactiveTintColor: colors.TEXT_SECONDARY,
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: colors.CARD_BACKGROUND,
+          borderTopColor: colors.BORDER,
+        },
       }}
     >
       <Tab.Screen

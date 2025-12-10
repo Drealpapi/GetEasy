@@ -1,0 +1,20 @@
+TO ADD YOUR SPLASH VIDEO:
+
+1. Place your video file here and name it "splash-video.mp4"
+2. Open App.tsx and change the import:
+   FROM: import SplashScreenSimple from "./src/screens/SplashScreenSimple";
+   TO:   import SplashScreen from "./src/screens/SplashScreen";
+
+3. Update the component in App.tsx:
+   FROM: <SplashScreenSimple onFinish={handleSplashFinish} />
+   TO:   <SplashScreen onFinish={handleSplashFinish} />
+
+4. Open src/screens/SplashScreen.tsx and uncomment the Video component
+
+Your video should be:
+- MP4 format
+- 7 seconds or less
+- Portrait orientation preferred
+- Under 10MB file size
+
+The app will automatically play your video for 7 seconds then show the role selection screen.

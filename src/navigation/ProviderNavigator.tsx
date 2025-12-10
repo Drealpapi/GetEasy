@@ -7,7 +7,7 @@ import AppointmentsScreen from "../screens/provider/Appointments/AppointmentsScr
 import ManageServicesScreen from "../screens/provider/ManageServices/ManageServicesScreen";
 import EarningsScreen from "../screens/provider/Earnings/EarningsScreen";
 import ProviderProfileScreen from "../screens/provider/ProviderProfileScreen";
-import { COLORS } from "../utils/constants";
+import { useTheme } from "../context/ThemeContext";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -30,11 +30,17 @@ function DashboardStack() {
 }
 
 export default function ProviderNavigator() {
+  const { colors } = useTheme();
+  
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: COLORS.EMERALD_GREEN,
-        tabBarInactiveTintColor: COLORS.GRAY,
+        tabBarActiveTintColor: colors.PRIMARY,
+        tabBarInactiveTintColor: colors.TEXT_SECONDARY,
+        tabBarStyle: {
+          backgroundColor: colors.CARD_BACKGROUND,
+          borderTopColor: colors.BORDER,
+        },
       }}
     >
       <Tab.Screen

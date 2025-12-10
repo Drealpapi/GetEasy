@@ -6,11 +6,111 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
-import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
+import { useAuth } from "../../../context/AuthContext";
+import { useTheme, SPACING, FONT_SIZE } from "../../../context/ThemeContext";
+import ThemeSettings from "../../../components/common/ThemeSettings";
 
 export default function ProfileScreen() {
-  const { currentUser, logout } = useDemoAuth();
+  const { currentUser, logout } = useAuth();
+  const { colors } = useTheme();
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.SURFACE,
+    },
+    header: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      alignItems: "center",
+      paddingVertical: SPACING.xl,
+      marginBottom: SPACING.md,
+    },
+    avatar: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: colors.PRIMARY,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: SPACING.md,
+    },
+    avatarText: {
+      fontSize: FONT_SIZE.xxl,
+      color: colors.BACKGROUND,
+      fontWeight: "bold",
+    },
+    name: {
+      fontSize: FONT_SIZE.xl,
+      fontWeight: "bold",
+      color: colors.TEXT_PRIMARY,
+      marginBottom: 4,
+    },
+    email: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_SECONDARY,
+    },
+    section: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      marginBottom: SPACING.md,
+      paddingVertical: SPACING.sm,
+    },
+    sectionTitle: {
+      fontSize: FONT_SIZE.md,
+      fontWeight: "600",
+      color: colors.TEXT_SECONDARY,
+      paddingHorizontal: SPACING.md,
+      paddingVertical: SPACING.sm,
+    },
+    infoRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingHorizontal: SPACING.md,
+      paddingVertical: SPACING.md,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.BORDER,
+    },
+    label: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_SECONDARY,
+    },
+    value: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+      fontWeight: "500",
+    },
+    menuItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: SPACING.md,
+      paddingVertical: SPACING.md,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.BORDER,
+    },
+    menuText: {
+      fontSize: FONT_SIZE.md,
+      color: colors.TEXT_PRIMARY,
+    },
+    arrow: {
+      fontSize: FONT_SIZE.xl,
+      color: colors.TEXT_SECONDARY,
+    },
+    logoutButton: {
+      backgroundColor: colors.CARD_BACKGROUND,
+      marginHorizontal: SPACING.md,
+      marginVertical: SPACING.lg,
+      paddingVertical: SPACING.md,
+      borderRadius: 8,
+      alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.ERROR,
+    },
+    logoutText: {
+      color: colors.ERROR,
+      fontSize: FONT_SIZE.md,
+      fontWeight: "600",
+    },
+  });
 
   return (
     <ScrollView style={styles.container}>
@@ -65,107 +165,12 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
 
+      {/* Theme Settings Section */}
+      <ThemeSettings />
+
       <TouchableOpacity style={styles.logoutButton} onPress={logout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
-  },
-  header: {
-    backgroundColor: COLORS.WHITE,
-    alignItems: "center",
-    paddingVertical: SPACING.xl,
-    marginBottom: SPACING.md,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: COLORS.EMERALD_GREEN,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: SPACING.md,
-  },
-  avatarText: {
-    fontSize: FONT_SIZE.xxl,
-    color: COLORS.WHITE,
-    fontWeight: "bold",
-  },
-  name: {
-    fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
-    color: COLORS.BLACK,
-    marginBottom: 4,
-  },
-  email: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
-  },
-  section: {
-    backgroundColor: COLORS.WHITE,
-    marginBottom: SPACING.md,
-    paddingVertical: SPACING.sm,
-  },
-  sectionTitle: {
-    fontSize: FONT_SIZE.md,
-    fontWeight: "600",
-    color: COLORS.GRAY,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-  },
-  infoRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
-  },
-  label: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
-  },
-  value: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-    fontWeight: "500",
-  },
-  menuItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
-  },
-  menuText: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-  },
-  arrow: {
-    fontSize: FONT_SIZE.xl,
-    color: COLORS.GRAY,
-  },
-  logoutButton: {
-    backgroundColor: COLORS.WHITE,
-    marginHorizontal: SPACING.md,
-    marginVertical: SPACING.lg,
-    paddingVertical: SPACING.md,
-    borderRadius: 8,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: COLORS.ERROR,
-  },
-  logoutText: {
-    color: COLORS.ERROR,
-    fontSize: FONT_SIZE.md,
-    fontWeight: "600",
-  },
-});
