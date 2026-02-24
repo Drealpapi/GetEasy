@@ -13,14 +13,14 @@ import {
 } from "react-native";
 import { Booking } from "../../../types/booking";
 import { getBookingsForProvider, updateBookingStatus, rescheduleBooking } from "../../../services/mock/mockData";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
 
 type FilterType = "all" | "pending" | "accepted" | "upcoming" | "completed" | "past";
 
 export default function AppointmentsScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [filteredBookings, setFilteredBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -218,13 +218,13 @@ export default function AppointmentsScreen() {
       case "Accepted":
         return COLORS.SUCCESS;
       case "Completed":
-        return COLORS.EMERALD_GREEN;
+        return COLORS.PRIMARY;
       case "Declined":
         return COLORS.ERROR;
       case "Rescheduled":
         return "#3b82f6";
       default:
-        return COLORS.GRAY;
+        return COLORS.TEXT_SECONDARY;
     }
   };
 
@@ -259,7 +259,7 @@ export default function AppointmentsScreen() {
         activeOpacity={0.7}
       >
         <View style={styles.cardHeader}>
-          <View style={styles.statusBadge} style={{ backgroundColor: getStatusColor(item.status) }}>
+          <View style={styles.statusBadge} >
             <Text style={styles.statusText}>
               {getStatusIcon(item.status)} {item.status}
             </Text>
@@ -351,7 +351,7 @@ export default function AppointmentsScreen() {
           <Text style={styles.statLabel}>Upcoming</Text>
         </View>
         <View style={styles.statCard}>
-          <Text style={[styles.statValue, { color: COLORS.EMERALD_GREEN }]}>{completedCount}</Text>
+          <Text style={[styles.statValue, { color: COLORS.PRIMARY }]}>{completedCount}</Text>
           <Text style={styles.statLabel}>Completed</Text>
         </View>
       </View>
@@ -500,7 +500,7 @@ export default function AppointmentsScreen() {
                 value={newDate}
                 onChangeText={setNewDate}
                 placeholder="2024-12-25"
-                placeholderTextColor={COLORS.GRAY}
+                placeholderTextColor={COLORS.TEXT_SECONDARY}
               />
             </View>
 
@@ -511,7 +511,7 @@ export default function AppointmentsScreen() {
                 value={newTime}
                 onChangeText={setNewTime}
                 placeholder="2:00 PM"
-                placeholderTextColor={COLORS.GRAY}
+                placeholderTextColor={COLORS.TEXT_SECONDARY}
               />
             </View>
 
@@ -543,17 +543,17 @@ export default function AppointmentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   statsContainer: {
     flexDirection: "row",
     padding: SPACING.md,
     gap: SPACING.sm,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
   },
   statCard: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 12,
     padding: SPACING.md,
     alignItems: "center",
@@ -561,17 +561,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 4,
   },
   statLabel: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   filtersContainer: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
+    borderBottomColor: COLORS.SURFACE,
   },
   filtersContent: {
     paddingHorizontal: SPACING.md,
@@ -584,22 +584,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 20,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     gap: SPACING.sm,
   },
   filterButtonActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
   },
   filterText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
   },
   filterTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   countBadge: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 2,
@@ -611,17 +611,17 @@ const styles = StyleSheet.create({
   },
   countText: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "bold",
   },
   countTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   listContent: {
     padding: SPACING.md,
   },
   bookingCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 16,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -643,7 +643,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   statusText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.xs,
     fontWeight: "bold",
   },
@@ -654,19 +654,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   upcomingText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.xs,
     fontWeight: "600",
   },
   serviceTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   customerName: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   detailsRow: {
@@ -685,7 +685,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     flex: 1,
   },
   cardFooter: {
@@ -695,32 +695,32 @@ const styles = StyleSheet.create({
     marginTop: SPACING.sm,
     paddingTop: SPACING.sm,
     borderTopWidth: 1,
-    borderTopColor: COLORS.LIGHT_GRAY,
+    borderTopColor: COLORS.SURFACE,
   },
   price: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   phone: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   notesContainer: {
     marginTop: SPACING.sm,
     padding: SPACING.sm,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 8,
   },
   notesLabel: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
     marginBottom: 4,
   },
   notesText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontStyle: "italic",
   },
   emptyContainer: {
@@ -734,13 +734,13 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
     marginBottom: 4,
   },
   emptySubtext: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     textAlign: "center",
   },
   modalOverlay: {
@@ -749,7 +749,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     maxHeight: "80%",
@@ -760,16 +760,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: SPACING.lg,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
+    borderBottomColor: COLORS.SURFACE,
   },
   modalTitle: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   closeButton: {
     fontSize: FONT_SIZE.xl,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "bold",
   },
   modalBody: {
@@ -781,37 +781,37 @@ const styles = StyleSheet.create({
   modalServiceTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   modalCustomer: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   modalDetail: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: 4,
   },
   modalPrice: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     marginTop: SPACING.sm,
   },
   modalSectionTitle: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   modalNotes: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontStyle: "italic",
     padding: SPACING.sm,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 8,
   },
   modalActions: {
@@ -832,7 +832,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3b82f6",
   },
   completeButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
   },
   reminderButton: {
     backgroundColor: "#f59e0b",
@@ -841,12 +841,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#8b5cf6",
   },
   actionButtonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "bold",
   },
   rescheduleModal: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 16,
     padding: SPACING.xl,
     margin: SPACING.xl,
@@ -856,16 +856,16 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
     fontWeight: "600",
   },
   input: {
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 8,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   rescheduleActions: {
     flexDirection: "row",
@@ -874,21 +874,21 @@ const styles = StyleSheet.create({
   },
   cancelReschedule: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   confirmReschedule: {
     flex: 1,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
   },
   cancelRescheduleText: {
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontSize: FONT_SIZE.md,
     fontWeight: "bold",
     textAlign: "center",
     paddingVertical: SPACING.md,
   },
   confirmRescheduleText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "bold",
     textAlign: "center",

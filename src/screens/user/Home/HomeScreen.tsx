@@ -9,20 +9,20 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { getAllServices } from "../../../services/mock/mockData";
 import { Service } from "../../../types/service";
 import { COLORS, SPACING, FONT_SIZE, SERVICE_CATEGORIES } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
 
 export default function HomeScreen({ navigation }: any) {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+  
   useEffect(() => {
     loadServices();
   }, []);
@@ -93,7 +93,7 @@ export default function HomeScreen({ navigation }: any) {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -111,7 +111,7 @@ export default function HomeScreen({ navigation }: any) {
           placeholder="Search services..."
           value={searchQuery}
           onChangeText={setSearchQuery}
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor={COLORS.TEXT_SECONDARY}
         />
         <TouchableOpacity
           style={styles.locationButton}
@@ -175,7 +175,7 @@ export default function HomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -183,45 +183,45 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     padding: SPACING.lg,
     paddingTop: SPACING.xl,
   },
   greeting: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.TEXT_LIGHT,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
+    color: COLORS.TEXT_LIGHT,
   },
   searchContainer: {
     padding: SPACING.md,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
   },
   searchInput: {
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.INPUT_BACKGROUND,
     borderRadius: 8,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   locationButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     borderRadius: 8,
     padding: SPACING.md,
     alignItems: "center",
   },
   locationButtonText: {
-    color: COLORS.WHITE,
+    color: COLORS.TEXT_LIGHT,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
   categoriesContainer: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     paddingVertical: SPACING.md,
   },
   categoriesContent: {
@@ -232,25 +232,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 20,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.INPUT_BACKGROUND,
     marginRight: SPACING.sm,
   },
   categoryChipActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
   },
   categoryText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
   },
   categoryTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.TEXT_LIGHT,
   },
   list: {
     padding: SPACING.md,
   },
   serviceCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 16,
     marginBottom: SPACING.md,
     shadowColor: "#000",
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: "100%",
     height: 180,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: SPACING.sm,
     right: SPACING.sm,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 4,
     borderRadius: 12,
@@ -303,23 +303,23 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     flex: 1,
     marginRight: SPACING.sm,
   },
   price: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   category: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   description: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   footer: {
@@ -329,11 +329,11 @@ const styles = StyleSheet.create({
   },
   location: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   jobs: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   empty: {
     alignItems: "center",
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
 });

@@ -8,13 +8,14 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { useDemoAuth } from "../../context/DemoAuthContext";
+import { useAuth } from "../../context/AuthContext";
+
 import { addReview } from "../../services/mock/mockData";
-import { COLORS, SPACING, FONT_SIZE } from "../../utils/constants";
+import { SPACING, FONT_SIZE } from "../../utils/constants";
 
 export default function AddReviewScreen({ route, navigation }: any) {
   const { booking } = route.params;
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,17 +55,17 @@ export default function AddReviewScreen({ route, navigation }: any) {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: COLORS.BACKGROUND }]}>
       <View style={styles.content}>
         {/* Booking Info */}
-        <View style={styles.bookingCard}>
-          <Text style={styles.bookingTitle}>Booking #{booking.id.slice(-8)}</Text>
-          <Text style={styles.bookingDate}>{booking.date} at {booking.time}</Text>
+        <View style={[styles.bookingCard, { backgroundColor: COLORS.PRIMARY }]}>
+          <Text style={[styles.bookingTitle, { color: COLORS.BACKGROUND }]}>Booking #{booking.id.slice(-8)}</Text>
+          <Text style={[styles.bookingDate, { color: COLORS.BACKGROUND }]}>{ booking.date} at {booking.time}</Text>
         </View>
 
         {/* Rating */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>How was your experience?</Text>
+        <View style={[styles.section, { backgroundColor: COLORS.CARD }]}>
+          <Text style={[styles.sectionTitle, { color: COLORS.TEXT_PRIMARY }]}>How was your experience?</Text>
           <View style={styles.starsContainer}>
             {[1, 2, 3, 4, 5].map((star) => (
               <TouchableOpacity
@@ -78,7 +79,7 @@ export default function AddReviewScreen({ route, navigation }: any) {
               </TouchableOpacity>
             ))}
           </View>
-          <Text style={styles.ratingText}>
+          <Text style={[styles.ratingText, { color: COLORS.TEXT_SECONDARY }]}>
             {rating === 0 && "Tap to rate"}
             {rating === 1 && "Poor"}
             {rating === 2 && "Fair"}
@@ -89,38 +90,42 @@ export default function AddReviewScreen({ route, navigation }: any) {
         </View>
 
         {/* Comment */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Share your feedback</Text>
+        <View style={[styles.section, { backgroundColor: COLORS.CARD }]}>
+          <Text style={[styles.sectionTitle, { color: COLORS.TEXT_PRIMARY }]}>Share your feedback</Text>
           <TextInput
-            style={styles.textArea}
+            style={[styles.textArea, { 
+              borderColor: COLORS.BORDER, 
+              color: COLORS.TEXT_PRIMARY,
+              backgroundColor: COLORS.INPUT_BACKGROUND 
+            }]}
             placeholder="Tell us about your experience..."
             value={comment}
             onChangeText={setComment}
             multiline
             numberOfLines={6}
-            placeholderTextColor={COLORS.GRAY}
+            placeholderTextColor={COLORS.TEXT_TERTIARY}
             textAlignVertical="top"
           />
-          <Text style={styles.charCount}>{comment.length}/500</Text>
+          <Text style={[styles.charCount, { color: COLORS.TEXT_SECONDARY }]}>{comment.length}/500</Text>
         </View>
 
         {/* Submit Button */}
         <TouchableOpacity
-          style={[styles.submitButton, loading && styles.buttonDisabled]}
+          style={[styles.submitButton, { backgroundColor: COLORS.PRIMARY }, loading && styles.buttonDisabled]}
           onPress={handleSubmit}
           disabled={loading}
         >
-          <Text style={styles.submitButtonText}>
+          <Text style={[styles.submitButtonText, { color: COLORS.BACKGROUND }]}>
             {loading ? "Submitting..." : "Submit Review"}
           </Text>
         </TouchableOpacity>
 
         {/* Tips */}
-        <View style={styles.tipsCard}>
-          <Text style={styles.tipsTitle}>💡 Review Tips</Text>
-          <Text style={styles.tipText}>• Be honest and specific</Text>
-          <Text style={styles.tipText}>• Mention what you liked or didn't like</Text>
-          <Text style={styles.tipText}>• Help others make informed decisions</Text>
+        <View style={[styles.tipsCard, { backgroundColor: COLORS.CARD }]}>
+          <Text style={[styles.tipsTitle, { color: COLORS.TEXT_PRIMARY }]}>💡 Review Tips</Text>
+          <Text style={[styles.tipText, { color: COLORS.TEXT_SECONDARY }]}>• Be honest and specific</Text>
+          <Text style={[styles.tipText, { color: COLORS.TEXT_SECONDARY }]}>• Mention what you liked or didn't like</Text>
+          <Text style={[styles.tipText, { color: COLORS.TEXT_SECONDARY }]}>• Help others make informed decisions</Text>
         </View>
       </View>
     </ScrollView>
@@ -130,13 +135,11 @@ export default function AddReviewScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
   },
   content: {
     padding: SPACING.lg,
   },
   bookingCard: {
-    backgroundColor: COLORS.EMERALD_GREEN,
     padding: SPACING.lg,
     borderRadius: 12,
     marginBottom: SPACING.lg,
@@ -144,15 +147,12 @@ const styles = StyleSheet.create({
   bookingTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.WHITE,
     marginBottom: 4,
   },
   bookingDate: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
   },
   section: {
-    backgroundColor: COLORS.WHITE,
     padding: SPACING.lg,
     borderRadius: 12,
     marginBottom: SPACING.lg,
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
     marginBottom: SPACING.md,
   },
   starsContainer: {
@@ -176,28 +175,22 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
     textAlign: "center",
     fontWeight: "600",
   },
   textArea: {
     borderWidth: 1,
-    borderColor: COLORS.LIGHT_GRAY,
     borderRadius: 8,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
     minHeight: 120,
-    backgroundColor: COLORS.LIGHT_GRAY,
   },
   charCount: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
     textAlign: "right",
     marginTop: SPACING.sm,
   },
   submitButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
     paddingVertical: SPACING.md,
     borderRadius: 12,
     alignItems: "center",
@@ -207,24 +200,20 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   submitButtonText: {
-    color: COLORS.WHITE,
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
   },
   tipsCard: {
-    backgroundColor: COLORS.WHITE,
     padding: SPACING.lg,
     borderRadius: 12,
   },
   tipsTitle: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
     marginBottom: SPACING.sm,
   },
   tipText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
     marginBottom: 4,
     lineHeight: 20,
   },

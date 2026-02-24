@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { ThemeColors, SPACING, FONT_SIZE } from "../context/ThemeContext";
+import { SPACING, FONT_SIZE, COLORS } from "./constants";
 
-export const createAuthStyles = (colors: ThemeColors) => StyleSheet.create({
+export const authStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.BACKGROUND,
+    backgroundColor: COLORS.BACKGROUND,
   },
   content: {
     padding: SPACING.lg,
@@ -13,59 +13,59 @@ export const createAuthStyles = (colors: ThemeColors) => StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: colors.PRIMARY,
+    color: COLORS.PRIMARY,
     marginBottom: SPACING.sm,
   },
   subtitle: {
     fontSize: FONT_SIZE.md,
-    color: colors.TEXT_SECONDARY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.xl,
   },
   errorContainer: {
-    backgroundColor: colors.ERROR + "20",
+    backgroundColor: COLORS.ERROR + "20",
     padding: SPACING.md,
     borderRadius: 8,
     marginBottom: SPACING.md,
     borderWidth: 1,
-    borderColor: colors.ERROR + "40",
+    borderColor: COLORS.ERROR + "40",
   },
   errorText: {
-    color: colors.ERROR,
+    color: COLORS.ERROR,
     fontSize: FONT_SIZE.sm,
     textAlign: "center",
   },
   successContainer: {
-    backgroundColor: colors.SUCCESS + "20",
+    backgroundColor: COLORS.SUCCESS + "20",
     padding: SPACING.md,
     borderRadius: 8,
     marginBottom: SPACING.xl,
     borderWidth: 1,
-    borderColor: colors.SUCCESS + "40",
+    borderColor: COLORS.SUCCESS + "40",
   },
   successText: {
-    color: colors.SUCCESS,
+    color: COLORS.SUCCESS,
     fontSize: FONT_SIZE.sm,
     textAlign: "center",
     lineHeight: 20,
   },
   input: {
     borderWidth: 1,
-    borderColor: colors.BORDER,
+    borderColor: COLORS.BORDER,
     borderRadius: 8,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: colors.TEXT_PRIMARY,
-    backgroundColor: colors.INPUT_BACKGROUND,
+    color: COLORS.TEXT_PRIMARY,
+    backgroundColor: COLORS.INPUT_BACKGROUND,
   },
   button: {
-    backgroundColor: colors.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.md,
     borderRadius: 8,
     alignItems: "center",
     marginTop: SPACING.md,
     marginBottom: SPACING.lg,
-    shadowColor: colors.SHADOW,
+    shadowColor: COLORS.SHADOW,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -75,15 +75,15 @@ export const createAuthStyles = (colors: ThemeColors) => StyleSheet.create({
     elevation: 5,
   },
   buttonDisabled: {
-    backgroundColor: colors.TEXT_TERTIARY,
+    backgroundColor: COLORS.TEXT_TERTIARY,
   },
   buttonText: {
-    color: colors.BACKGROUND,
+    color: COLORS.TEXT_LIGHT,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
   linkText: {
-    color: colors.PRIMARY,
+    color: COLORS.PRIMARY,
     fontSize: FONT_SIZE.sm,
     textAlign: "center",
     marginTop: SPACING.md,
@@ -97,24 +97,24 @@ export const createAuthStyles = (colors: ThemeColors) => StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 2,
-    borderColor: colors.BORDER,
+    borderColor: COLORS.BORDER,
     borderRadius: 4,
     marginRight: SPACING.sm,
     alignItems: "center",
     justifyContent: "center",
   },
   checkboxChecked: {
-    backgroundColor: colors.PRIMARY,
-    borderColor: colors.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
+    borderColor: COLORS.PRIMARY,
   },
   checkmark: {
-    color: colors.BACKGROUND,
+    color: COLORS.TEXT_LIGHT,
     fontSize: 12,
     fontWeight: "bold",
   },
   checkboxText: {
     fontSize: FONT_SIZE.sm,
-    color: colors.TEXT_PRIMARY,
+    color: COLORS.TEXT_PRIMARY,
     flex: 1,
   },
 });

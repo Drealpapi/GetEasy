@@ -7,14 +7,24 @@ import AppointmentsScreen from "../screens/provider/Appointments/AppointmentsScr
 import ManageServicesScreen from "../screens/provider/ManageServices/ManageServicesScreen";
 import EarningsScreen from "../screens/provider/Earnings/EarningsScreen";
 import ProviderProfileScreen from "../screens/provider/ProviderProfileScreen";
-import { useTheme } from "../context/ThemeContext";
+import { COLORS } from "../utils/constants";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function DashboardStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: COLORS.CARD,
+        },
+        headerTintColor: COLORS.TEXT_PRIMARY,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <Stack.Screen
         name="DashboardMain"
         component={DashboardScreen}
@@ -30,16 +40,14 @@ function DashboardStack() {
 }
 
 export default function ProviderNavigator() {
-  const { colors } = useTheme();
-  
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: colors.PRIMARY,
-        tabBarInactiveTintColor: colors.TEXT_SECONDARY,
+        tabBarActiveTintColor: COLORS.PRIMARY,
+        tabBarInactiveTintColor: COLORS.TEXT_SECONDARY,
         tabBarStyle: {
-          backgroundColor: colors.CARD_BACKGROUND,
-          borderTopColor: colors.BORDER,
+          backgroundColor: COLORS.CARD,
+          borderTopColor: COLORS.BORDER,
         },
       }}
     >
@@ -59,6 +67,13 @@ export default function ProviderNavigator() {
           tabBarLabel: "Bookings",
           tabBarIcon: () => <Text>📅</Text>,
           title: "Appointments",
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
       <Tab.Screen
@@ -67,6 +82,13 @@ export default function ProviderNavigator() {
         options={{
           tabBarLabel: "Services",
           tabBarIcon: () => <Text>🛠️</Text>,
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
       <Tab.Screen
@@ -75,6 +97,13 @@ export default function ProviderNavigator() {
         options={{
           tabBarLabel: "Earnings",
           tabBarIcon: () => <Text>💰</Text>,
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
       <Tab.Screen
@@ -83,6 +112,13 @@ export default function ProviderNavigator() {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: () => <Text>👤</Text>,
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
     </Tab.Navigator>

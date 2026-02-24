@@ -5,7 +5,7 @@ import {
   updateBookingStatus,
   rescheduleBooking,
 } from "../services/mock/mockData";
-import { useDemoAuth } from "./DemoAuthContext";
+import { useAuth } from "./AuthContext";
 
 interface BookingContextType {
   bookings: Booking[];
@@ -22,7 +22,7 @@ interface BookingContextType {
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export const BookingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 

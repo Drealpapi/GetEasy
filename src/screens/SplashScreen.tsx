@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { Video, ResizeMode } from "expo-av";
-import { useTheme } from "../context/ThemeContext";
+
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -10,7 +10,6 @@ interface SplashScreenProps {
 const { width, height } = Dimensions.get('window');
 
 export default function SplashScreen({ onFinish }: SplashScreenProps) {
-  const { colors } = useTheme();
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.BACKGROUND }]}>
+    <View style={[styles.container, { backgroundColor: COLORS.BACKGROUND }]}>
       <Video
         source={require('../../assets/splash.mp4')}
         style={styles.video}
@@ -58,7 +57,7 @@ export default function SplashScreen({ onFinish }: SplashScreenProps) {
       
       {/* Fallback content if video doesn't load */}
       {!videoLoaded && (
-        <View style={[styles.fallbackContainer, { backgroundColor: colors.PRIMARY }]}>
+        <View style={[styles.fallbackContainer, { backgroundColor: COLORS.PRIMARY }]}>
           {/* You can add a logo or loading animation here */}
         </View>
       )}

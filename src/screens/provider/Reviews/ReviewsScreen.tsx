@@ -6,14 +6,14 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { getReviewsForProvider, calculateProviderRating } from "../../../services/mock/mockData";
 import { Review } from "../../../types/review";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatDate } from "../../../utils/helpers";
 
 export default function ReviewsScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [averageRating, setAverageRating] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -50,7 +50,7 @@ export default function ReviewsScreen() {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -81,7 +81,7 @@ export default function ReviewsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   ratingCard: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     padding: SPACING.xl,
     alignItems: "center",
     marginBottom: SPACING.md,
@@ -97,23 +97,23 @@ const styles = StyleSheet.create({
   ratingValue: {
     fontSize: 48,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   ratingLabel: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginTop: SPACING.sm,
   },
   reviewCount: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginTop: 4,
   },
   list: {
     padding: SPACING.md,
   },
   reviewCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -134,16 +134,16 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   comment: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   bookingId: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   empty: {
     alignItems: "center",
@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
 });

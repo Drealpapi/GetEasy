@@ -1,13 +1,46 @@
+// Global color palette - used throughout the app
 export const COLORS = {
-  EMERALD_GREEN: "#0a8a60",
-  EMERALD_DARK: "#076644",
+  // Primary brand colors
+  PRIMARY: "#0a8a60",
+  PRIMARY_DARK: "#076644",
+  PRIMARY_LIGHT: "#0cb878",
+  
+  // Background colors
+  BACKGROUND: "#ffffff",
+  SURFACE: "#f8f9fa",
+  CARD: "#ffffff",
+  
+  // Text colors
+  TEXT_PRIMARY: "#1a1a1a",
+  TEXT_SECONDARY: "#666666",
+  TEXT_TERTIARY: "#999999",
+  TEXT_LIGHT: "#ffffff",
+  
+  // Border and divider colors
+  BORDER: "#e0e0e0",
+  DIVIDER: "#f0f0f0",
+  
+  // Input colors
+  INPUT_BACKGROUND: "#f5f5f5",
+  INPUT_BORDER: "#d0d0d0",
+  INPUT_FOCUS: "#0a8a60",
+  
+  // Status colors
+  SUCCESS: "#0a8a60",
+  ERROR: "#dc2626",
+  WARNING: "#f59e0b",
+  INFO: "#3b82f6",
+  
+  // Utility colors
   WHITE: "#ffffff",
   BLACK: "#000000",
+  GRAY_LIGHT: "#f2f2f2",
   GRAY: "#888888",
-  LIGHT_GRAY: "#f2f2f2",
-  ERROR: "#dc2626",
-  SUCCESS: "#0a8a60",
-  WARNING: "#f59e0b",
+  GRAY_DARK: "#4a4a4a",
+  
+  // Shadow
+  SHADOW: "rgba(0, 0, 0, 0.1)",
+  SHADOW_DARK: "rgba(0, 0, 0, 0.2)",
 };
 
 export const SPACING = {

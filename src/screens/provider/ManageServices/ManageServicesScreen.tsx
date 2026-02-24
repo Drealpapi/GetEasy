@@ -8,14 +8,14 @@ import {
   ActivityIndicator,
   Alert,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { MOCK_SERVICES, deleteService } from "../../../services/mock/mockData";
 import { Service } from "../../../types/service";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
 
 export default function ManageServicesScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +83,7 @@ export default function ManageServicesScreen() {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -111,7 +111,7 @@ export default function ManageServicesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   serviceCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -141,22 +141,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     flex: 1,
   },
   price: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   category: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   description: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   stats: {
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   },
   stat: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   actions: {
     flexDirection: "row",
@@ -174,13 +174,13 @@ const styles = StyleSheet.create({
   },
   editButton: {
     flex: 1,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.sm,
     borderRadius: 8,
     alignItems: "center",
   },
   editText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deleteText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   fab: {
     position: "absolute",
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   fabText: {
     fontSize: 32,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontWeight: "300",
   },
 });

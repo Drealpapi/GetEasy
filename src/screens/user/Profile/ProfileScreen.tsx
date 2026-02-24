@@ -7,20 +7,18 @@ import {
   ScrollView,
 } from "react-native";
 import { useAuth } from "../../../context/AuthContext";
-import { useTheme, SPACING, FONT_SIZE } from "../../../context/ThemeContext";
-import ThemeSettings from "../../../components/common/ThemeSettings";
+import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 
 export default function ProfileScreen() {
   const { currentUser, logout } = useAuth();
-  const { colors } = useTheme();
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.SURFACE,
+      backgroundColor: COLORS.SURFACE,
     },
     header: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       alignItems: "center",
       paddingVertical: SPACING.xl,
       marginBottom: SPACING.md,
@@ -29,35 +27,35 @@ export default function ProfileScreen() {
       width: 80,
       height: 80,
       borderRadius: 40,
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: SPACING.md,
     },
     avatarText: {
       fontSize: FONT_SIZE.xxl,
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
       fontWeight: "bold",
     },
     name: {
       fontSize: FONT_SIZE.xl,
       fontWeight: "bold",
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       marginBottom: 4,
     },
     email: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
     },
     section: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       marginBottom: SPACING.md,
       paddingVertical: SPACING.sm,
     },
     sectionTitle: {
       fontSize: FONT_SIZE.md,
       fontWeight: "600",
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       paddingHorizontal: SPACING.md,
       paddingVertical: SPACING.sm,
     },
@@ -67,15 +65,15 @@ export default function ProfileScreen() {
       paddingHorizontal: SPACING.md,
       paddingVertical: SPACING.md,
       borderBottomWidth: 1,
-      borderBottomColor: colors.BORDER,
+      borderBottomColor: COLORS.BORDER,
     },
     label: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
     },
     value: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       fontWeight: "500",
     },
     menuItem: {
@@ -85,28 +83,28 @@ export default function ProfileScreen() {
       paddingHorizontal: SPACING.md,
       paddingVertical: SPACING.md,
       borderBottomWidth: 1,
-      borderBottomColor: colors.BORDER,
+      borderBottomColor: COLORS.BORDER,
     },
     menuText: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
     },
     arrow: {
       fontSize: FONT_SIZE.xl,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
     },
     logoutButton: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       marginHorizontal: SPACING.md,
       marginVertical: SPACING.lg,
       paddingVertical: SPACING.md,
       borderRadius: 8,
       alignItems: "center",
       borderWidth: 1,
-      borderColor: colors.ERROR,
+      borderColor: COLORS.ERROR,
     },
     logoutText: {
-      color: colors.ERROR,
+      color: COLORS.ERROR,
       fontSize: FONT_SIZE.md,
       fontWeight: "600",
     },
@@ -164,9 +162,6 @@ export default function ProfileScreen() {
           <Text style={styles.arrow}>›</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Theme Settings Section */}
-      <ThemeSettings />
 
       <TouchableOpacity style={styles.logoutButton} onPress={logout}>
         <Text style={styles.logoutText}>Logout</Text>

@@ -8,14 +8,14 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { useDemoAuth } from "../../context/DemoAuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { createBooking } from "../../services/mock/mockData";
 import { COLORS, SPACING, FONT_SIZE } from "../../utils/constants";
 import { formatPrice } from "../../utils/helpers";
 
 export default function BookingFormScreen({ route, navigation }: any) {
   const { service } = route.params;
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [address, setAddress] = useState(currentUser?.state || "");
@@ -77,7 +77,7 @@ export default function BookingFormScreen({ route, navigation }: any) {
               placeholder="YYYY-MM-DD (e.g., 2024-12-25)"
               value={date}
               onChangeText={setDate}
-              placeholderTextColor={COLORS.GRAY}
+              placeholderTextColor={COLORS.TEXT_SECONDARY}
             />
           </View>
 
@@ -88,7 +88,7 @@ export default function BookingFormScreen({ route, navigation }: any) {
               placeholder="HH:MM AM/PM (e.g., 10:00 AM)"
               value={time}
               onChangeText={setTime}
-              placeholderTextColor={COLORS.GRAY}
+              placeholderTextColor={COLORS.TEXT_SECONDARY}
             />
           </View>
 
@@ -101,7 +101,7 @@ export default function BookingFormScreen({ route, navigation }: any) {
               onChangeText={setAddress}
               multiline
               numberOfLines={3}
-              placeholderTextColor={COLORS.GRAY}
+              placeholderTextColor={COLORS.TEXT_SECONDARY}
             />
           </View>
 
@@ -114,7 +114,7 @@ export default function BookingFormScreen({ route, navigation }: any) {
               onChangeText={setNotes}
               multiline
               numberOfLines={3}
-              placeholderTextColor={COLORS.GRAY}
+              placeholderTextColor={COLORS.TEXT_SECONDARY}
             />
           </View>
 
@@ -155,40 +155,40 @@ export default function BookingFormScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   content: {
     flex: 1,
   },
   serviceCard: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     padding: SPACING.lg,
     marginBottom: SPACING.md,
   },
   serviceTitle: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginBottom: 4,
   },
   serviceCategory: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginBottom: SPACING.sm,
   },
   servicePrice: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   form: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
   },
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.lg,
   },
   inputGroup: {
@@ -197,17 +197,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   input: {
     borderWidth: 1,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
     borderRadius: 8,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
-    backgroundColor: COLORS.WHITE,
+    color: COLORS.TEXT_PRIMARY,
+    backgroundColor: COLORS.CARD,
   },
   textArea: {
     height: 80,
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.lg,
     paddingTop: SPACING.lg,
     borderTopWidth: 1,
-    borderTopColor: COLORS.LIGHT_GRAY,
+    borderTopColor: COLORS.SURFACE,
   },
   summaryRow: {
     flexDirection: "row",
@@ -226,34 +226,34 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   summaryValue: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "500",
   },
   totalRow: {
     marginTop: SPACING.md,
     paddingTop: SPACING.md,
     borderTopWidth: 2,
-    borderTopColor: COLORS.BLACK,
+    borderTopColor: COLORS.TEXT_PRIMARY,
   },
   totalLabel: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   totalValue: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   bottomBar: {
     padding: SPACING.md,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderTopWidth: 1,
-    borderTopColor: COLORS.LIGHT_GRAY,
+    borderTopColor: COLORS.SURFACE,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   button: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.md,
     borderRadius: 12,
     alignItems: "center",
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   buttonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
   },

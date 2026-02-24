@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useAuth } from "../../context/AuthContext";
-import { useTheme } from "../../context/ThemeContext";
-import { createAuthStyles } from "../../utils/authStyles";
+import { authStyles } from "../../utils/authStyles";
+import { COLORS } from "../../utils/constants";
 
 interface UserLoginScreenProps {
   navigation: any;
@@ -20,7 +20,6 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { loginUser, isLoading, error, clearError } = useAuth();
-  const { colors } = useTheme();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -46,61 +45,60 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
     navigation.navigate("ForgotPassword", { role: "user" });
   };
 
-  const styles = createAuthStyles(colors);
-
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Welcome Back</Text>
-        <Text style={styles.subtitle}>Login to your account</Text>
+    <ScrollView style={authStyles.container}>
+      <View style={authStyles.content}>
+        <Text style={authStyles.title}>Welcome Back</Text>
+        <Text style={authStyles.subtitle}>Login to your account</Text>
 
         {error && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{error}</Text>
+          <View style={authStyles.errorContainer}>
+            <Text style={authStyles.errorText}>{error}</Text>
           </View>
         )}
 
         <TextInput
-          style={styles.input}
+          style={authStyles.input}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          placeholderTextColor={colors.TEXT_TERTIARY}
+          placeholderTextColor={COLORS.TEXT_TERTIARY}
           editable={!isLoading}
         />
 
         <TextInput
-          style={styles.input}
+          style={authStyles.input}
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          placeholderTextColor={colors.TEXT_TERTIARY}
+          placeholderTextColor={COLORS.TEXT_TERTIARY}
           editable={!isLoading}
         />
 
         <TouchableOpacity 
-          style={[styles.button, isLoading && styles.buttonDisabled]} 
+          style={[authStyles.button, isLoading && authStyles.buttonDisabled]} 
           onPress={handleLogin}
           disabled={isLoading}
         >
           {isLoading ? (
-            <ActivityIndicator color={colors.BACKGROUND} />
+            <ActivityIndicator color={COLORS.BACKGROUND} />
           ) : (
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={authStyles.buttonText}>Login</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleForgotPassword} disabled={isLoading}>
-          <Text style={styles.linkText}>Forgot Password?</Text>
+          <Text style={authStyles.linkText}>Forgot Password?</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleCreateAccount} disabled={isLoading}>
-          <Text style={styles.linkText}>Don't have an account? Create Account</Text>
+          <Text style={authStyles.linkText}>Don't have an account? Create Account</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
+

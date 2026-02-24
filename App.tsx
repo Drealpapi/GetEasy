@@ -1,13 +1,12 @@
+import 'react-native-gesture-handler';
 import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "./src/context/AuthContext";
-import { ThemeProvider, useTheme } from "./src/context/ThemeContext";
 import AppNavigator from "./src/navigation/AppNavigator";
-import SplashScreen from "./src/screens/SplashScreen";
+import SplashScreenSimple from "./src/screens/SplashScreenSimple";
 
 function AppContent() {
-  const { colors, isDarkMode } = useTheme();
   const [showSplash, setShowSplash] = useState(true);
 
   const handleSplashFinish = () => {
@@ -17,15 +16,15 @@ function AppContent() {
   if (showSplash) {
     return (
       <>
-        <StatusBar style={isDarkMode ? "light" : "dark"} />
-        <SplashScreen onFinish={handleSplashFinish} />
+        <StatusBar style="dark" />
+        <SplashScreenSimple onFinish={handleSplashFinish} />
       </>
     );
   }
   
   return (
     <>
-      <StatusBar style={isDarkMode ? "light" : "dark"} />
+      <StatusBar style="dark" />
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
@@ -35,10 +34,8 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { User } from "../types/user";
+import { MOCK_USERS, MOCK_PROVIDERS } from "../services/mock/mockData";
 
 interface AuthContextValue {
   currentUser: User | null;
@@ -79,26 +80,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
-      if (!validateEmail(email)) {
-        throw new Error("Invalid email format");
+      // Demo mode: Accept any email/password and use first mock user
+      // In production, this would validate credentials against backend
+      const mockUser = MOCK_USERS[0]; // Use first mock user for demo
+      
+      if (mockUser) {
+        setCurrentUser(mockUser);
+      } else {
+        throw new Error("No demo users available");
       }
-      
-      if (!validatePassword(password)) {
-        throw new Error("Password must be at least 6 characters");
-      }
-
-      // Mock user login - in real app, this would call an API
-      const mockUser: User = {
-        id: "user_" + Date.now(),
-        name: "Test User",
-        email: email,
-        role: "user",
-        phone: "123-456-7890"
-      };
-      
-      setCurrentUser(mockUser);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
       throw err;
@@ -113,27 +105,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
-      if (!validateEmail(email)) {
-        throw new Error("Invalid email format");
+      // Demo mode: Accept any email/password and use first mock provider
+      // In production, this would validate credentials against backend
+      const mockProvider = MOCK_PROVIDERS[0]; // Use first mock provider for demo
+      
+      if (mockProvider) {
+        setCurrentUser(mockProvider);
+      } else {
+        throw new Error("No demo providers available");
       }
-      
-      if (!validatePassword(password)) {
-        throw new Error("Password must be at least 6 characters");
-      }
-
-      // Mock provider login - in real app, this would call an API
-      const mockProvider: User = {
-        id: "provider_" + Date.now(),
-        name: "Test Provider",
-        email: email,
-        role: "provider",
-        phone: "123-456-7890",
-        state: "CA"
-      };
-      
-      setCurrentUser(mockProvider);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
       throw err;
@@ -148,7 +130,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       if (!validateEmail(userData.email)) {
         throw new Error("Invalid email format");
@@ -162,8 +144,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error("You must accept the terms and conditions");
       }
 
-      // Mock user creation - in real app, this would call an API
-      console.log("User registered successfully:", userData.email);
+      // Demo mode: Auto-login with first mock user after registration
+      const mockUser = MOCK_USERS[0];
+      if (mockUser) {
+        setCurrentUser(mockUser);
+      }
+      
+      console.log("Demo: User registered successfully:", userData.email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
       throw err;
@@ -178,7 +165,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       if (!validateEmail(providerData.email)) {
         throw new Error("Invalid email format");
@@ -192,8 +179,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error("You must accept all terms and conditions");
       }
 
-      // Mock provider creation - in real app, this would call an API
-      console.log("Provider registered successfully:", providerData.email);
+      // Demo mode: Auto-login with first mock provider after registration
+      const mockProvider = MOCK_PROVIDERS[0];
+      if (mockProvider) {
+        setCurrentUser(mockProvider);
+      }
+      
+      console.log("Demo: Provider registered successfully:", providerData.email);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
       throw err;

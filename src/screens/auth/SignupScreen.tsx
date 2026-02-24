@@ -55,7 +55,7 @@ export default function SignupScreen({ navigation }: any) {
           placeholder="Full Name"
           value={name}
           onChangeText={setName}
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor={COLORS.TEXT_SECONDARY}
         />
 
         <TextInput
@@ -65,7 +65,7 @@ export default function SignupScreen({ navigation }: any) {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor={COLORS.TEXT_SECONDARY}
         />
 
         <TextInput
@@ -74,7 +74,7 @@ export default function SignupScreen({ navigation }: any) {
           value={phone}
           onChangeText={setPhone}
           keyboardType="phone-pad"
-          placeholderTextColor={COLORS.GRAY}
+          placeholderTextColor={COLORS.TEXT_SECONDARY}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleSignup}>
@@ -92,7 +92,7 @@ export default function SignupScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
   },
   content: {
     padding: SPACING.lg,
@@ -101,12 +101,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     marginBottom: SPACING.sm,
   },
   subtitle: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.xl,
   },
   roleSelector: {
@@ -119,44 +119,44 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
     alignItems: "center",
   },
   roleButtonActive: {
-    borderColor: COLORS.EMERALD_GREEN,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    borderColor: COLORS.PRIMARY,
+    backgroundColor: COLORS.PRIMARY,
   },
   roleText: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
   },
   roleTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   input: {
     borderWidth: 1,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
     borderRadius: 8,
     padding: SPACING.md,
     marginBottom: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   button: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.md,
     borderRadius: 8,
     alignItems: "center",
     marginTop: SPACING.md,
   },
   buttonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
   linkText: {
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontSize: FONT_SIZE.sm,
     textAlign: "center",
     marginTop: SPACING.lg,

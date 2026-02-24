@@ -6,14 +6,14 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { getPaymentsForProvider } from "../../../services/mock/mockData";
 import { Payment } from "../../../types/payment";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatPrice, formatDate } from "../../../utils/helpers";
 
 export default function EarningsScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +53,7 @@ export default function EarningsScreen() {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -89,7 +89,7 @@ export default function EarningsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -103,25 +103,25 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     flex: 1,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     borderRadius: 12,
     padding: SPACING.md,
   },
   summaryLabel: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginBottom: 4,
   },
   summaryValue: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   list: {
     padding: SPACING.md,
   },
   paymentCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -140,15 +140,15 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   date: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   bookingId: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   breakdown: {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   breakdownText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   empty: {
     alignItems: "center",
@@ -165,6 +165,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
 });

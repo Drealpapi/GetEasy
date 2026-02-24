@@ -1,14 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useTheme, SPACING, FONT_SIZE } from "../../context/ThemeContext";
-import ThemeToggle from "../../components/common/ThemeToggle";
+import { COLORS, SPACING, FONT_SIZE } from "../../utils/constants";
 
 interface LoginScreenProps {
   navigation: any;
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
-  const { colors } = useTheme();
 
   const handleUserLogin = () => {
     navigation.navigate("UserLogin");
@@ -23,34 +21,29 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: colors.BACKGROUND,
+      backgroundColor: COLORS.BACKGROUND,
       padding: SPACING.lg,
-    },
-    themeToggleContainer: {
-      position: "absolute",
-      top: 60,
-      right: SPACING.lg,
     },
     title: {
       fontSize: FONT_SIZE.xxl,
       fontWeight: "bold",
-      color: colors.PRIMARY,
+      color: COLORS.PRIMARY,
       marginBottom: SPACING.sm,
     },
     subtitle: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       marginBottom: SPACING.xl,
     },
     button: {
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       paddingVertical: SPACING.md,
       paddingHorizontal: SPACING.xl,
       borderRadius: 8,
       marginVertical: SPACING.sm,
       width: "100%",
       alignItems: "center",
-      shadowColor: colors.SHADOW,
+      shadowColor: COLORS.SHADOW,
       shadowOffset: {
         width: 0,
         height: 2,
@@ -60,10 +53,10 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       elevation: 5,
     },
     providerButton: {
-      backgroundColor: colors.SECONDARY,
+      backgroundColor: COLORS.PRIMARY_DARK,
     },
     buttonText: {
-      color: colors.BACKGROUND,
+      color: COLORS.TEXT_LIGHT,
       fontSize: FONT_SIZE.md,
       fontWeight: "600",
     },
@@ -71,10 +64,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.themeToggleContainer}>
-        <ThemeToggle showLabel={false} size="small" />
-      </View>
-      
       <Text style={styles.title}>GetEasy</Text>
       <Text style={styles.subtitle}>Login</Text>
 

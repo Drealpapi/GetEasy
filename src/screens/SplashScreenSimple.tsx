@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { View, Text, StyleSheet, Dimensions, Animated, Easing } from "react-native";
-import { useTheme, FONT_SIZE, SPACING } from "../context/ThemeContext";
+import { COLORS, FONT_SIZE, SPACING } from "../utils/constants";
 
 interface SplashScreenSimpleProps {
   onFinish: () => void;
@@ -9,7 +9,6 @@ interface SplashScreenSimpleProps {
 const { width, height } = Dimensions.get('window');
 
 export default function SplashScreenSimple({ onFinish }: SplashScreenSimpleProps) {
-  const { colors } = useTheme();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const progressAnim = useRef(new Animated.Value(0)).current;
@@ -49,7 +48,7 @@ export default function SplashScreenSimple({ onFinish }: SplashScreenSimpleProps
   });
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.PRIMARY }]}>
+    <View style={[styles.container, { backgroundColor: COLORS.PRIMARY }]}>
       {/* Animated logo container */}
       <Animated.View 
         style={[
@@ -60,28 +59,28 @@ export default function SplashScreenSimple({ onFinish }: SplashScreenSimpleProps
           }
         ]}
       >
-        <Text style={[styles.logoText, { color: colors.BACKGROUND }]}>
+        <Text style={[styles.logoText, { color: COLORS.BACKGROUND }]}>
           GetEasy
         </Text>
-        <Text style={[styles.tagline, { color: colors.BACKGROUND }]}>
+        <Text style={[styles.tagline, { color: COLORS.BACKGROUND }]}>
           Making services easy
         </Text>
       </Animated.View>
       
       {/* Animated loading indicator */}
       <Animated.View style={[styles.loadingContainer, { opacity: fadeAnim }]}>
-        <View style={[styles.loadingBar, { backgroundColor: colors.BACKGROUND + '30' }]}>
+        <View style={[styles.loadingBar, { backgroundColor: COLORS.BACKGROUND + '30' }]}>
           <Animated.View 
             style={[
               styles.loadingProgress, 
               { 
-                backgroundColor: colors.BACKGROUND,
+                backgroundColor: COLORS.BACKGROUND,
                 width: progressWidth,
               }
             ]} 
           />
         </View>
-        <Text style={[styles.loadingText, { color: colors.BACKGROUND }]}>
+        <Text style={[styles.loadingText, { color: COLORS.BACKGROUND }]}>
           Loading...
         </Text>
       </Animated.View>

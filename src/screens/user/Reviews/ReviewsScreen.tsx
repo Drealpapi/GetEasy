@@ -6,14 +6,14 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { MOCK_REVIEWS } from "../../../services/mock/mockData";
 import { Review } from "../../../types/review";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatDate } from "../../../utils/helpers";
 
 export default function ReviewsScreen() {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +49,7 @@ export default function ReviewsScreen() {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -77,7 +77,7 @@ export default function ReviewsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   reviewCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -109,16 +109,16 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   comment: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
   bookingId: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   empty: {
     alignItems: "center",
@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   emptySubtext: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
 });

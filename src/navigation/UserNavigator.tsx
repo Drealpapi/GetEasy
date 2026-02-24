@@ -10,14 +10,24 @@ import BookingDetailScreen from "../screens/user/BookingDetailScreen";
 import AddReviewScreen from "../screens/user/AddReviewScreen";
 import ProfileScreen from "../screens/user/Profile/ProfileScreen";
 import LocationSearchScreen from "../screens/user/LocationSearchScreen";
-import { useTheme } from "../context/ThemeContext";
+import { COLORS } from "../utils/constants";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function HomeStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: COLORS.CARD,
+        },
+        headerTintColor: COLORS.TEXT_PRIMARY,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <Stack.Screen
         name="HomeMain"
         component={HomeScreen}
@@ -39,7 +49,17 @@ function HomeStack() {
 
 function BookingsStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: COLORS.CARD,
+        },
+        headerTintColor: COLORS.TEXT_PRIMARY,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <Stack.Screen
         name="BookingsList"
         component={BookingScreen}
@@ -60,17 +80,15 @@ function BookingsStack() {
 }
 
 export default function UserNavigator() {
-  const { colors } = useTheme();
-  
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: colors.PRIMARY,
-        tabBarInactiveTintColor: colors.TEXT_SECONDARY,
+        tabBarActiveTintColor: COLORS.PRIMARY,
+        tabBarInactiveTintColor: COLORS.TEXT_SECONDARY,
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: colors.CARD_BACKGROUND,
-          borderTopColor: colors.BORDER,
+          backgroundColor: COLORS.CARD,
+          borderTopColor: COLORS.BORDER,
         },
       }}
     >
@@ -99,6 +117,13 @@ export default function UserNavigator() {
           tabBarIcon: () => <Text>🔍</Text>,
           headerShown: true,
           title: "Find Services",
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
       <Tab.Screen
@@ -109,6 +134,13 @@ export default function UserNavigator() {
           tabBarIcon: () => <Text>👤</Text>,
           headerShown: true,
           title: "Profile",
+          headerStyle: {
+            backgroundColor: COLORS.CARD,
+          },
+          headerTintColor: COLORS.TEXT_PRIMARY,
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
         }}
       />
     </Tab.Navigator>

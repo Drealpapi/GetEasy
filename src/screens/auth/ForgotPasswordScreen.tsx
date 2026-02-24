@@ -9,8 +9,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useAuth } from "../../context/AuthContext";
-import { useTheme } from "../../context/ThemeContext";
-import { createAuthStyles } from "../../utils/authStyles";
+import { authStyles } from "../../utils/authStyles";
+import { COLORS } from "../../utils/constants";
 
 interface ForgotPasswordScreenProps {
   navigation: any;
@@ -25,7 +25,6 @@ export default function ForgotPasswordScreen({ navigation, route }: ForgotPasswo
   const [email, setEmail] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const { resetPassword, isLoading, error, clearError } = useAuth();
-  const { colors } = useTheme();
   const role = route.params?.role || 'user';
 
   const handleResetPassword = async () => {
@@ -51,25 +50,23 @@ export default function ForgotPasswordScreen({ navigation, route }: ForgotPasswo
     }
   };
 
-  const styles = createAuthStyles(colors);
-
   if (isSuccess) {
     return (
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <Text style={styles.title}>Check Your Email</Text>
-          <Text style={styles.subtitle}>
+      <View style={authStyles.container}>
+        <View style={authStyles.content}>
+          <Text style={authStyles.title}>Check Your Email</Text>
+          <Text style={authStyles.subtitle}>
             We've sent password reset instructions to {email}
           </Text>
           
-          <View style={styles.successContainer}>
-            <Text style={styles.successText}>
+          <View style={authStyles.successContainer}>
+            <Text style={authStyles.successText}>
               Please check your email and follow the instructions to reset your password.
             </Text>
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handleBackToLogin}>
-            <Text style={styles.buttonText}>Back to Login</Text>
+          <TouchableOpacity style={authStyles.button} onPress={handleBackToLogin}>
+            <Text style={authStyles.buttonText}>Back to Login</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -77,10 +74,10 @@ export default function ForgotPasswordScreen({ navigation, route }: ForgotPasswo
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Reset Password</Text>
-        <Text style={styles.subtitle}>
+    <ScrollView style={authStyles.container}>
+      <View style={authStyles.content}>
+        <Text style={authStyles.title}>Reset Password</Text>
+        <Text style={authStyles.subtitle}>
           {role === 'provider' 
             ? "Enter your provider email to reset your password" 
             : "Enter your email to reset your password"
@@ -88,36 +85,36 @@ export default function ForgotPasswordScreen({ navigation, route }: ForgotPasswo
         </Text>
 
         {error && (
-          <View style={styles.errorContainer}>
-            <Text style={styles.errorText}>{error}</Text>
+          <View style={authStyles.errorContainer}>
+            <Text style={authStyles.errorText}>{error}</Text>
           </View>
         )}
 
         <TextInput
-          style={styles.input}
+          style={authStyles.input}
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          placeholderTextColor={colors.TEXT_TERTIARY}
+          placeholderTextColor={COLORS.TEXT_TERTIARY}
           editable={!isLoading}
         />
 
         <TouchableOpacity 
-          style={[styles.button, isLoading && styles.buttonDisabled]} 
+          style={[authStyles.button, isLoading && authStyles.buttonDisabled]} 
           onPress={handleResetPassword}
           disabled={isLoading}
         >
           {isLoading ? (
-            <ActivityIndicator color={colors.BACKGROUND} />
+            <ActivityIndicator color={COLORS.BACKGROUND} />
           ) : (
-            <Text style={styles.buttonText}>Send Reset Instructions</Text>
+            <Text style={authStyles.buttonText}>Send Reset Instructions</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleBackToLogin} disabled={isLoading}>
-          <Text style={styles.linkText}>Remember your password? Login</Text>
+          <Text style={authStyles.linkText}>Remember your password? Login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

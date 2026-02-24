@@ -10,14 +10,11 @@ import {
   Alert,
 } from "react-native";
 import { useAuth } from "../../context/AuthContext";
-import { useTheme, SPACING, FONT_SIZE } from "../../context/ThemeContext";
-import { SERVICE_CATEGORIES } from "../../utils/constants";
+import { COLORS, SPACING, FONT_SIZE, SERVICE_CATEGORIES } from "../../utils/constants";
 import { getAllUSStates, getCitiesByState } from "../../utils/usStatesData";
-import ThemeToggle from "../../components/common/ThemeToggle";
 
 export default function ProviderProfileScreen() {
   const { currentUser } = useAuth();
-  const { colors } = useTheme();
   const [isEditing, setIsEditing] = useState(false);
   
   // Profile data
@@ -59,14 +56,14 @@ export default function ProviderProfileScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.SURFACE,
+      backgroundColor: COLORS.SURFACE,
     },
     headerCard: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       padding: SPACING.xl,
       alignItems: "center",
       borderBottomWidth: 1,
-      borderBottomColor: colors.BORDER,
+      borderBottomColor: COLORS.BORDER,
     },
     avatarContainer: {
       position: "relative",
@@ -76,27 +73,27 @@ export default function ProviderProfileScreen() {
       width: 100,
       height: 100,
       borderRadius: 50,
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       justifyContent: "center",
       alignItems: "center",
     },
     avatarText: {
       fontSize: 40,
       fontWeight: "bold",
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
     },
     editAvatarButton: {
       position: "absolute",
       bottom: 0,
       right: 0,
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       borderRadius: 15,
       width: 30,
       height: 30,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 2,
-      borderColor: colors.PRIMARY,
+      borderColor: COLORS.PRIMARY,
     },
     editAvatarText: {
       fontSize: 14,
@@ -104,27 +101,27 @@ export default function ProviderProfileScreen() {
     businessName: {
       fontSize: FONT_SIZE.xxl,
       fontWeight: "bold",
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       marginBottom: SPACING.sm,
     },
     businessNameInput: {
       fontSize: FONT_SIZE.xxl,
       fontWeight: "bold",
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       marginBottom: SPACING.sm,
       borderBottomWidth: 2,
-      borderBottomColor: colors.PRIMARY,
+      borderBottomColor: COLORS.PRIMARY,
       paddingVertical: 4,
       textAlign: "center",
     },
     locationBadge: {
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       paddingHorizontal: SPACING.md,
       paddingVertical: SPACING.sm,
       borderRadius: 20,
     },
     locationText: {
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
       fontSize: FONT_SIZE.sm,
       fontWeight: "600",
     },
@@ -135,12 +132,12 @@ export default function ProviderProfileScreen() {
       gap: SPACING.md,
     },
     statCard: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       borderRadius: 12,
       padding: SPACING.md,
       width: "47%",
       alignItems: "center",
-      shadowColor: colors.SHADOW,
+      shadowColor: COLORS.SHADOW,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
@@ -153,16 +150,16 @@ export default function ProviderProfileScreen() {
     statValue: {
       fontSize: FONT_SIZE.xl,
       fontWeight: "bold",
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       marginBottom: 4,
     },
     statLabel: {
       fontSize: FONT_SIZE.xs,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       textAlign: "center",
     },
     editButton: {
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       marginHorizontal: SPACING.md,
       paddingVertical: SPACING.md,
       borderRadius: 12,
@@ -170,36 +167,36 @@ export default function ProviderProfileScreen() {
       marginBottom: SPACING.md,
     },
     editButtonText: {
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
       fontSize: FONT_SIZE.lg,
       fontWeight: "bold",
     },
     section: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       padding: SPACING.lg,
       marginBottom: SPACING.md,
     },
     sectionTitle: {
       fontSize: FONT_SIZE.lg,
       fontWeight: "bold",
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       marginBottom: SPACING.md,
     },
     description: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       lineHeight: 22,
     },
     descriptionInput: {
-      backgroundColor: colors.INPUT_BACKGROUND,
+      backgroundColor: COLORS.INPUT_BACKGROUND,
       borderRadius: 8,
       padding: SPACING.md,
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       minHeight: 100,
       textAlignVertical: "top",
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     categoriesGrid: {
       flexDirection: "row",
@@ -210,95 +207,95 @@ export default function ProviderProfileScreen() {
       paddingHorizontal: SPACING.md,
       paddingVertical: SPACING.sm,
       borderRadius: 20,
-      backgroundColor: colors.SURFACE,
+      backgroundColor: COLORS.SURFACE,
       borderWidth: 2,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     categoryChipActive: {
-      backgroundColor: colors.PRIMARY,
-      borderColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
+      borderColor: COLORS.PRIMARY,
     },
     categoryChipDisabled: {
       opacity: 0.7,
     },
     categoryChipText: {
       fontSize: FONT_SIZE.sm,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       fontWeight: "600",
     },
     categoryChipTextActive: {
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
     },
     inputGroup: {
       marginBottom: SPACING.md,
     },
     inputLabel: {
       fontSize: FONT_SIZE.sm,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       marginBottom: SPACING.sm,
       fontWeight: "600",
     },
     input: {
-      backgroundColor: colors.INPUT_BACKGROUND,
+      backgroundColor: COLORS.INPUT_BACKGROUND,
       borderRadius: 8,
       padding: SPACING.md,
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     inputValue: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       paddingVertical: SPACING.sm,
     },
     selectButton: {
-      backgroundColor: colors.INPUT_BACKGROUND,
+      backgroundColor: COLORS.INPUT_BACKGROUND,
       borderRadius: 8,
       padding: SPACING.md,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     selectButtonText: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
     },
     selectButtonArrow: {
       fontSize: FONT_SIZE.sm,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
     },
     dropdown: {
-      backgroundColor: colors.CARD_BACKGROUND,
+      backgroundColor: COLORS.CARD,
       borderRadius: 8,
       marginTop: SPACING.sm,
       maxHeight: 200,
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     dropdownItem: {
       padding: SPACING.md,
       borderBottomWidth: 1,
-      borderBottomColor: colors.BORDER,
+      borderBottomColor: COLORS.BORDER,
     },
     dropdownItemText: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
     },
     rateInputContainer: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: colors.INPUT_BACKGROUND,
+      backgroundColor: COLORS.INPUT_BACKGROUND,
       borderRadius: 8,
       paddingHorizontal: SPACING.md,
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     dollarSign: {
       fontSize: FONT_SIZE.lg,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
       fontWeight: "bold",
       marginRight: SPACING.sm,
     },
@@ -306,15 +303,12 @@ export default function ProviderProfileScreen() {
       flex: 1,
       padding: SPACING.md,
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_PRIMARY,
+      color: COLORS.TEXT_PRIMARY,
     },
     perHour: {
       fontSize: FONT_SIZE.md,
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       marginLeft: SPACING.sm,
-    },
-    themeToggleContainer: {
-      paddingVertical: SPACING.sm,
     },
     actionButtons: {
       flexDirection: "row",
@@ -323,27 +317,27 @@ export default function ProviderProfileScreen() {
     },
     cancelButton: {
       flex: 1,
-      backgroundColor: colors.SURFACE,
+      backgroundColor: COLORS.SURFACE,
       paddingVertical: SPACING.md,
       borderRadius: 12,
       alignItems: "center",
       borderWidth: 1,
-      borderColor: colors.BORDER,
+      borderColor: COLORS.BORDER,
     },
     cancelButtonText: {
-      color: colors.TEXT_SECONDARY,
+      color: COLORS.TEXT_SECONDARY,
       fontSize: FONT_SIZE.lg,
       fontWeight: "bold",
     },
     saveButton: {
       flex: 1,
-      backgroundColor: colors.PRIMARY,
+      backgroundColor: COLORS.PRIMARY,
       paddingVertical: SPACING.md,
       borderRadius: 12,
       alignItems: "center",
     },
     saveButtonText: {
-      color: colors.BACKGROUND,
+      color: COLORS.BACKGROUND,
       fontSize: FONT_SIZE.lg,
       fontWeight: "bold",
     },
@@ -599,10 +593,6 @@ export default function ProviderProfileScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Theme</Text>
-          <View style={styles.themeToggleContainer}>
-            <ThemeToggle showLabel={true} size="medium" />
-          </View>
         </View>
       </View>
 

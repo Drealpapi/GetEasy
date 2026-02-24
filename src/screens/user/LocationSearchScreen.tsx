@@ -156,7 +156,7 @@ export default function LocationSearchScreen({ navigation }: any) {
             placeholder="Search state or city..."
             value={searchQuery}
             onChangeText={handleSearchQueryChange}
-            placeholderTextColor={COLORS.GRAY}
+            placeholderTextColor={COLORS.TEXT_SECONDARY}
           />
           {(searchSuggestions.states.length > 0 || searchSuggestions.cities.length > 0) && (
             <View style={styles.suggestionsContainer}>
@@ -368,55 +368,55 @@ export default function LocationSearchScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   content: {
     paddingBottom: SPACING.xl,
   },
   header: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     padding: SPACING.lg,
     paddingTop: SPACING.xl,
   },
   title: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   searchSection: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
     marginBottom: SPACING.md,
   },
   section: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
     marginBottom: SPACING.md,
   },
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   searchInput: {
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 8,
     padding: SPACING.md,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   suggestionsContainer: {
     marginTop: SPACING.sm,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
     maxHeight: 250,
   },
   suggestionItem: {
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
+    borderBottomColor: COLORS.SURFACE,
   },
   suggestionIcon: {
     fontSize: 20,
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
   },
   suggestionText: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   sectionHeader: {
     flexDirection: "row",
@@ -449,23 +449,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 8,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderWidth: 2,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
     minWidth: "30%",
     alignItems: "center",
   },
   stateGridItemActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    borderColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
+    borderColor: COLORS.PRIMARY,
   },
   stateGridText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "600",
   },
   stateGridTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   chipsContainer: {
     flexDirection: "row",
@@ -475,21 +475,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 20,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderWidth: 2,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
   },
   chipActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    borderColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
+    borderColor: COLORS.PRIMARY,
   },
   chipText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
   },
   chipTextActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   viewAllButton: {
     marginTop: SPACING.md,
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
   },
   viewAllText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontWeight: "600",
   },
   categoriesGrid: {
@@ -507,16 +507,16 @@ const styles = StyleSheet.create({
   },
   categoryCard: {
     width: "47%",
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 12,
     padding: SPACING.lg,
     alignItems: "center",
     borderWidth: 2,
-    borderColor: COLORS.LIGHT_GRAY,
+    borderColor: COLORS.SURFACE,
   },
   categoryCardActive: {
-    backgroundColor: COLORS.EMERALD_GREEN,
-    borderColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
+    borderColor: COLORS.PRIMARY,
   },
   categoryIcon: {
     fontSize: 40,
@@ -525,13 +525,13 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   categoryNameActive: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   searchButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     marginHorizontal: SPACING.lg,
     paddingVertical: SPACING.md,
     borderRadius: 12,
@@ -539,11 +539,11 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.md,
   },
   searchButtonDisabled: {
-    backgroundColor: COLORS.GRAY,
+    backgroundColor: COLORS.TEXT_SECONDARY,
     opacity: 0.5,
   },
   searchButtonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
   },
@@ -553,11 +553,11 @@ const styles = StyleSheet.create({
   popularTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   popularCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
@@ -575,53 +575,53 @@ const styles = StyleSheet.create({
   },
   popularLocation: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "600",
     marginBottom: 4,
   },
   popularCount: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   popularArrow: {
     fontSize: FONT_SIZE.xl,
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontWeight: "bold",
   },
   resultsHeader: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
+    borderBottomColor: COLORS.SURFACE,
   },
   resultsTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   resetText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontWeight: "600",
   },
   activeFilters: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.md,
     flexDirection: "row",
     gap: SPACING.sm,
     flexWrap: "wrap",
   },
   filterBadge: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 16,
   },
   filterBadgeText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },
@@ -629,7 +629,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   serviceCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -648,18 +648,18 @@ const styles = StyleSheet.create({
   serviceTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     flex: 1,
     marginRight: SPACING.sm,
   },
   servicePrice: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   serviceCategory: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   serviceFooter: {
@@ -668,11 +668,11 @@ const styles = StyleSheet.create({
   },
   serviceLocation: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   serviceRating: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   emptyResults: {
     alignItems: "center",
@@ -684,12 +684,12 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     fontWeight: "600",
     marginBottom: 4,
   },
   emptySubtext: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
 });

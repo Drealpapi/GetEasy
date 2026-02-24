@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+
 import { updateBookingStatus } from "../../services/mock/mockData";
 import { COLORS, SPACING, FONT_SIZE } from "../../utils/constants";
 import { formatDate, formatPrice } from "../../utils/helpers";
@@ -20,13 +21,13 @@ export default function BookingDetailScreen({ route, navigation }: any) {
       case "Completed":
         return COLORS.SUCCESS;
       case "Accepted":
-        return COLORS.EMERALD_GREEN;
+        return COLORS.PRIMARY;
       case "Pending":
         return COLORS.WARNING;
       case "Declined":
         return COLORS.ERROR;
       default:
-        return COLORS.GRAY;
+        return COLORS.TEXT_SECONDARY;
     }
   };
 
@@ -152,7 +153,7 @@ export default function BookingDetailScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   statusBanner: {
     padding: SPACING.lg,
@@ -161,21 +162,21 @@ const styles = StyleSheet.create({
   statusText: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   section: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
     marginBottom: SPACING.md,
   },
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   infoCard: {
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 12,
     padding: SPACING.md,
   },
@@ -186,16 +187,16 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   value: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "600",
   },
   addressCard: {
     flexDirection: "row",
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 12,
     padding: SPACING.md,
   },
@@ -206,13 +207,13 @@ const styles = StyleSheet.create({
   addressText: {
     flex: 1,
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     lineHeight: 22,
   },
   providerCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 12,
     padding: SPACING.md,
   },
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     justifyContent: "center",
     alignItems: "center",
     marginRight: SPACING.md,
@@ -234,30 +235,30 @@ const styles = StyleSheet.create({
   providerName: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 2,
   },
   providerContact: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   actions: {
     padding: SPACING.lg,
   },
   reviewButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.md,
     borderRadius: 12,
     alignItems: "center",
     marginBottom: SPACING.md,
   },
   reviewButtonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
   cancelButton: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderWidth: 2,
     borderColor: COLORS.ERROR,
     paddingVertical: SPACING.md,
@@ -279,30 +280,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   reviewedText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
   helpSection: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     padding: SPACING.lg,
     marginBottom: SPACING.lg,
   },
   helpTitle: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   helpButton: {
     borderWidth: 1,
-    borderColor: COLORS.EMERALD_GREEN,
+    borderColor: COLORS.PRIMARY,
     paddingVertical: SPACING.sm,
     borderRadius: 8,
     alignItems: "center",
   },
   helpButtonText: {
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },

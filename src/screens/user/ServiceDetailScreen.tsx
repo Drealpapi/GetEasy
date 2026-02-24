@@ -109,7 +109,7 @@ export default function ServiceDetailScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.BACKGROUND,
   },
   imageContainer: {
     position: "relative",
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: "100%",
     height: 250,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: SPACING.md,
     right: SPACING.md,
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: 20,
@@ -157,22 +157,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 4,
   },
   category: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   price: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   providerCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     padding: SPACING.md,
     borderRadius: 12,
     marginBottom: SPACING.lg,
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     justifyContent: "center",
     alignItems: "center",
     marginRight: SPACING.md,
@@ -195,12 +195,12 @@ const styles = StyleSheet.create({
   providerName: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 2,
   },
   providerStats: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   section: {
     marginBottom: SPACING.lg,
@@ -208,12 +208,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   description: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     lineHeight: 22,
   },
   detailRow: {
@@ -221,19 +221,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: SPACING.sm,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.LIGHT_GRAY,
+    borderBottomColor: COLORS.BORDER,
   },
   detailLabel: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   detailValue: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "500",
   },
   reviewPreview: {
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     padding: SPACING.md,
     borderRadius: 12,
   },
@@ -243,20 +243,20 @@ const styles = StyleSheet.create({
   },
   reviewText: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
     fontStyle: "italic",
   },
   reviewAuthor: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   bottomBar: {
     flexDirection: "row",
     padding: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.LIGHT_GRAY,
-    backgroundColor: COLORS.WHITE,
+    borderTopColor: COLORS.BORDER,
+    backgroundColor: COLORS.CARD,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
@@ -269,16 +269,16 @@ const styles = StyleSheet.create({
   },
   priceLabel: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: 2,
   },
   priceValue: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   bookButton: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingHorizontal: SPACING.xl,
     paddingVertical: SPACING.md,
     borderRadius: 12,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bookButtonText: {
-    color: COLORS.WHITE,
+    color: COLORS.TEXT_LIGHT,
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
   },

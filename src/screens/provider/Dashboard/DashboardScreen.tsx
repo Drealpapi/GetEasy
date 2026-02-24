@@ -7,14 +7,14 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { getBookingsForProvider } from "../../../services/mock/mockData";
 import { Booking } from "../../../types/booking";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
 
 export default function DashboardScreen({ navigation }: any) {
-  const { currentUser, logout } = useDemoAuth();
+  const { currentUser, logout } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -269,10 +269,10 @@ export default function DashboardScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   header: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     padding: SPACING.lg,
     paddingTop: SPACING.xl,
     flexDirection: "row",
@@ -284,13 +284,13 @@ const styles = StyleSheet.create({
   },
   greeting: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     opacity: 0.9,
   },
   name: {
     fontSize: FONT_SIZE.xxl,
     fontWeight: "bold",
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
   },
   logoutButton: {
     flexDirection: "row",
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logoutText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.sm,
     fontWeight: "600",
   },
@@ -316,7 +316,7 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   statCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 16,
     padding: SPACING.md,
     width: "47%",
@@ -340,12 +340,12 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: FONT_SIZE.xl,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 4,
   },
   statLabel: {
     fontSize: FONT_SIZE.xs,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     textAlign: "center",
   },
   section: {
@@ -360,12 +360,12 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.md,
   },
   seeAllText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontWeight: "600",
   },
   actionsGrid: {
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
   },
   actionCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     width: "47%",
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     fontWeight: "600",
     textAlign: "center",
   },
@@ -408,17 +408,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   actionBadgeText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.xs,
     fontWeight: "bold",
   },
   todayCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
     borderLeftWidth: 4,
-    borderLeftColor: COLORS.EMERALD_GREEN,
+    borderLeftColor: COLORS.PRIMARY,
   },
   todayHeader: {
     flexDirection: "row",
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   todayTime: {
     fontSize: FONT_SIZE.md,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   todayStatus: {
     paddingHorizontal: SPACING.sm,
@@ -437,27 +437,27 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   todayStatusText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.xs,
     fontWeight: "600",
   },
   todayService: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 4,
   },
   todayCustomer: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: 4,
   },
   todayAddress: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   activityCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
@@ -480,20 +480,20 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: 4,
   },
   activityDetail: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   activityPrice: {
     fontSize: FONT_SIZE.md,
     fontWeight: "bold",
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
   },
   insightCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.sm,
@@ -506,22 +506,22 @@ const styles = StyleSheet.create({
   },
   insightLabel: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
   },
   insightValue: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   progressBar: {
     height: 8,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
     borderRadius: 4,
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     borderRadius: 4,
   },
   bottomSpacer: {

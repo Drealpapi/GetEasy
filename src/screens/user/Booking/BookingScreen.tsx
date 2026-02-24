@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useDemoAuth } from "../../../context/DemoAuthContext";
+import { useAuth } from "../../../context/AuthContext";
+
 import { getBookingsForUser } from "../../../services/mock/mockData";
 import { Booking } from "../../../types/booking";
 import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
 import { formatDate } from "../../../utils/helpers";
 
 export default function BookingScreen({ navigation }: any) {
-  const { currentUser } = useDemoAuth();
+  const { currentUser } = useAuth();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,13 +36,13 @@ export default function BookingScreen({ navigation }: any) {
       case "Completed":
         return COLORS.SUCCESS;
       case "Accepted":
-        return COLORS.EMERALD_GREEN;
+        return COLORS.PRIMARY;
       case "Pending":
         return COLORS.WARNING;
       case "Declined":
         return COLORS.ERROR;
       default:
-        return COLORS.GRAY;
+        return COLORS.TEXT_SECONDARY;
     }
   };
 
@@ -66,7 +67,7 @@ export default function BookingScreen({ navigation }: any) {
   if (loading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.EMERALD_GREEN} />
+        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
       </View>
     );
   }
@@ -97,7 +98,7 @@ export default function BookingScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.LIGHT_GRAY,
+    backgroundColor: COLORS.SURFACE,
   },
   centered: {
     flex: 1,
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
   },
   bookingCard: {
-    backgroundColor: COLORS.WHITE,
+    backgroundColor: COLORS.CARD,
     borderRadius: 12,
     padding: SPACING.md,
     marginBottom: SPACING.md,
@@ -127,7 +128,7 @@ const styles = StyleSheet.create({
   serviceTitle: {
     fontSize: FONT_SIZE.lg,
     fontWeight: "bold",
-    color: COLORS.BLACK,
+    color: COLORS.TEXT_PRIMARY,
   },
   statusBadge: {
     paddingHorizontal: SPACING.sm,
@@ -135,23 +136,23 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   statusText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.xs,
     fontWeight: "600",
   },
   date: {
     fontSize: FONT_SIZE.md,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: 4,
   },
   address: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.sm,
   },
   tapHint: {
     fontSize: FONT_SIZE.sm,
-    color: COLORS.EMERALD_GREEN,
+    color: COLORS.PRIMARY,
     fontWeight: "600",
   },
   empty: {
@@ -160,17 +161,17 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: FONT_SIZE.lg,
-    color: COLORS.GRAY,
+    color: COLORS.TEXT_SECONDARY,
     marginBottom: SPACING.lg,
   },
   button: {
-    backgroundColor: COLORS.EMERALD_GREEN,
+    backgroundColor: COLORS.PRIMARY,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xl,
     borderRadius: 8,
   },
   buttonText: {
-    color: COLORS.WHITE,
+    color: COLORS.CARD,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
