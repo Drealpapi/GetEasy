@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useState } from "react";
+import { SafeAreaView, StyleSheet, Platform, StatusBar as RNStatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { AuthProvider } from "./src/context/AuthContext";
@@ -15,20 +16,20 @@ function AppContent() {
 
   if (showSplash) {
     return (
-      <>
-        <StatusBar style="dark" />
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="dark" translucent={false} backgroundColor="#ffffff" />
         <SplashScreenSimple onFinish={handleSplashFinish} />
-      </>
+      </SafeAreaView>
     );
   }
   
   return (
-    <>
-      <StatusBar style="dark" />
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" translucent={false} backgroundColor="#ffffff" />
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>
-    </>
+    </SafeAreaView>
   );
 }
 
@@ -39,3 +40,11 @@ export default function App() {
     </AuthProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingTop: Platform.OS === 'android' ? RNStatusBar.currentHeight : 0,
+  },
+});

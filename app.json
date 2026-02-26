@@ -23,7 +23,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0a8a60"
       },
-      "package": "com.geteasy.app"
+      "package": "com.geteasy.app",
+      "softwareKeyboardLayoutMode": "pan",
+      "statusBar": {
+        "backgroundColor": "#ffffff",
+        "barStyle": "dark-content",
+        "translucent": false
+      }
     },
     "plugins": [
       [
