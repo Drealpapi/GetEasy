@@ -7,8 +7,6 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from "../../context/AuthContext";
@@ -21,8 +19,6 @@ interface UserLoginScreenProps {
 export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
   const { loginUser, isLoading, error, clearError } = useAuth();
 
   const handleLogin = async () => {
@@ -48,14 +44,12 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
       >
         {/* Header with gradient */}
         <LinearGradient
@@ -81,10 +75,7 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
           {/* Email Input */}
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Email Address</Text>
-            <View style={[
-              styles.inputContainer,
-              emailFocused && styles.inputContainerFocused
-            ]}>
+            <View style={styles.inputContainer}>
               <Text style={styles.inputIcon}>📧</Text>
               <TextInput
                 style={styles.input}
@@ -95,8 +86,6 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
                 autoCapitalize="none"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
               />
             </View>
           </View>
@@ -104,10 +93,7 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
           {/* Password Input */}
           <View style={styles.inputGroup}>
             <Text style={styles.inputLabel}>Password</Text>
-            <View style={[
-              styles.inputContainer,
-              passwordFocused && styles.inputContainerFocused
-            ]}>
+            <View style={styles.inputContainer}>
               <Text style={styles.inputIcon}>🔒</Text>
               <TextInput
                 style={styles.input}
@@ -117,8 +103,6 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
                 secureTextEntry
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
               />
             </View>
           </View>
@@ -170,7 +154,7 @@ export default function UserLoginScreen({ navigation }: UserLoginScreenProps) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

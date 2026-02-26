@@ -6,8 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS, SPACING, FONT_SIZE, FONT_WEIGHT, BORDER_RADIUS, SHADOWS } from "../../utils/constants";
@@ -31,14 +29,12 @@ export default function SignupScreen({ navigation }: any) {
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
       >
         {/* Header with gradient */}
         <LinearGradient
@@ -103,8 +99,6 @@ export default function SignupScreen({ navigation }: any) {
                 value={name}
                 onChangeText={setName}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
-                onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
               />
             </View>
           </View>
@@ -125,8 +119,6 @@ export default function SignupScreen({ navigation }: any) {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
               />
             </View>
           </View>
@@ -146,8 +138,6 @@ export default function SignupScreen({ navigation }: any) {
                 onChangeText={setPhone}
                 keyboardType="phone-pad"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
-                onFocus={() => setPhoneFocused(true)}
-                onBlur={() => setPhoneFocused(false)}
               />
             </View>
           </View>
@@ -184,7 +174,7 @@ export default function SignupScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

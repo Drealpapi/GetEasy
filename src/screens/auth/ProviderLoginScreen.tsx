@@ -7,8 +7,6 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from "../../context/AuthContext";
@@ -48,14 +46,12 @@ export default function ProviderLoginScreen({ navigation }: ProviderLoginScreenP
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
       >
         {/* Header with gradient */}
         <LinearGradient
@@ -96,8 +92,6 @@ export default function ProviderLoginScreen({ navigation }: ProviderLoginScreenP
                 autoCapitalize="none"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
               />
             </View>
           </View>
@@ -118,8 +112,6 @@ export default function ProviderLoginScreen({ navigation }: ProviderLoginScreenP
                 secureTextEntry
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
               />
             </View>
           </View>
@@ -171,7 +163,7 @@ export default function ProviderLoginScreen({ navigation }: ProviderLoginScreenP
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

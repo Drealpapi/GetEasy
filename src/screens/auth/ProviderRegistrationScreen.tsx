@@ -7,8 +7,6 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth, ProviderRegistrationData } from "../../context/AuthContext";
@@ -83,14 +81,12 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
       >
         {/* Header with gradient */}
         <LinearGradient
@@ -131,8 +127,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 onChangeText={setName}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
               />
             </View>
           </View>
@@ -154,8 +148,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 autoCapitalize="none"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
               />
             </View>
           </View>
@@ -176,8 +168,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 secureTextEntry
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
               />
             </View>
           </View>
@@ -198,8 +188,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 keyboardType="phone-pad"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPhoneFocused(true)}
-                onBlur={() => setPhoneFocused(false)}
               />
             </View>
           </View>
@@ -219,8 +207,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 onChangeText={setBusinessName}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setBusinessFocused(true)}
-                onBlur={() => setBusinessFocused(false)}
               />
             </View>
           </View>
@@ -240,8 +226,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 onChangeText={setServiceCategory}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setCategoryFocused(true)}
-                onBlur={() => setCategoryFocused(false)}
               />
             </View>
           </View>
@@ -261,8 +245,6 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
                 onChangeText={setState}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setStateFocused(true)}
-                onBlur={() => setStateFocused(false)}
               />
             </View>
           </View>
@@ -335,7 +317,7 @@ export default function ProviderRegistrationScreen({ navigation }: ProviderRegis
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

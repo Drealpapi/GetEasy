@@ -7,8 +7,6 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth, UserRegistrationData } from "../../context/AuthContext";
@@ -72,14 +70,12 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always"
       >
         {/* Header with gradient */}
         <LinearGradient
@@ -117,8 +113,6 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
                 onChangeText={setName}
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
               />
             </View>
           </View>
@@ -140,8 +134,6 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
                 autoCapitalize="none"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
               />
             </View>
           </View>
@@ -162,8 +154,6 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
                 secureTextEntry
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPasswordFocused(true)}
-                onBlur={() => setPasswordFocused(false)}
               />
             </View>
           </View>
@@ -184,8 +174,6 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
                 keyboardType="phone-pad"
                 placeholderTextColor={COLORS.TEXT_TERTIARY}
                 editable={!isLoading}
-                onFocus={() => setPhoneFocused(true)}
-                onBlur={() => setPhoneFocused(false)}
               />
             </View>
           </View>
@@ -243,7 +231,7 @@ export default function UserRegistrationScreen({ navigation }: UserRegistrationS
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
