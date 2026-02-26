@@ -1,130 +1,106 @@
-# GetEasy - Service Aggregator App
+# GetEasy - Service Booking Platform
 
-A React Native mobile application built with Expo for connecting users with local service providers.
+A modern React Native mobile application for booking services, built with Expo.
 
-## 🚀 Quick Start
+## Project Structure
+
+This project follows a **feature-based architecture** for better scalability and maintainability.
+
+```
+src/
+├── features/              # Feature modules (self-contained)
+│   ├── auth/             # Authentication & authorization
+│   ├── user/             # User-facing features
+│   ├── provider/         # Service provider features
+│   └── booking/          # Booking management
+├── shared/               # Shared across all features
+│   ├── components/       # Reusable UI components
+│   ├── hooks/           # Common React hooks
+│   ├── utils/           # Helper functions
+│   └── constants/       # App-wide constants
+├── core/                # Core app functionality
+│   ├── navigation/      # Navigation setup
+│   ├── services/        # API & data services
+│   └── types/          # Global TypeScript types
+└── config/             # App configuration
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- Expo CLI
+- Expo Go app (for testing on device)
+
+### Installation
 
 ```bash
-# Install dependencies
 npm install
+```
 
-# Start the development server
+### Running the App
+
+```bash
+# Start development server
 npm start
 
-# Start with cleared cache
+# Run on Android
+npm run android
+
+# Run on iOS
+npm run ios
+
+# Clear cache and start
 npm run start:clear
 ```
 
-Then scan the QR code with Expo Go app on your phone.
+## Features
 
-## 📱 Features
+- **User Features**
+  - Browse and search services
+  - Book appointments
+  - Manage bookings
+  - Leave reviews
+  - Location-based search
 
-### For Users
-- Browse local services by category and location
-- Book appointments with service providers
-- View booking history and status
-- Leave reviews and ratings
-- Dark/Light theme support
+- **Provider Features**
+  - Dashboard with analytics
+  - Manage services
+  - View appointments
+  - Track earnings
+  - Respond to reviews
 
-### For Providers
-- Manage service listings
-- View and manage appointments
-- Track earnings
-- View customer reviews
-- Dashboard with analytics
+- **Authentication**
+  - Role-based login (User/Provider)
+  - Registration flows
+  - Demo mode for testing
 
-## 🎨 Theme System
+## Tech Stack
 
-The app supports both light and dark modes:
-- Toggle in Profile → Theme Settings
-- Choose Light, Dark, or System Default
-- Theme persists across app restarts
+- React Native 0.81.5
+- Expo ~54.0
+- React Navigation 7.x
+- TypeScript
+- React Context API for state management
 
-## 📁 Project Structure
+## Documentation
 
-```
-GetEasy/
-├── src/
-│   ├── components/      # Reusable UI components
-│   │   ├── common/      # Buttons, inputs, cards, etc.
-│   │   ├── provider/    # Provider-specific components
-│   │   └── user/        # User-specific components
-│   ├── context/         # React Context providers
-│   │   ├── AuthContext.tsx
-│   │   ├── ThemeContext.tsx
-│   │   └── BookingContext.tsx
-│   ├── hooks/           # Custom React hooks
-│   ├── navigation/      # Navigation configuration
-│   │   ├── AppNavigator.tsx
-│   │   ├── AuthNavigator.tsx
-│   │   ├── UserNavigator.tsx
-│   │   └── ProviderNavigator.tsx
-│   ├── screens/         # App screens
-│   │   ├── auth/        # Authentication screens
-│   │   ├── user/        # User-facing screens
-│   │   └── provider/    # Provider-facing screens
-│   ├── services/        # API and data services
-│   │   ├── api/         # API calls
-│   │   ├── firebase/    # Firebase config
-│   │   └── mock/        # Mock data for demo
-│   ├── types/           # TypeScript type definitions
-│   └── utils/           # Utility functions and constants
-├── assets/              # Images, fonts, videos
-├── docs/                # Documentation files
-├── App.tsx              # Root component
-├── app.json             # Expo configuration
-└── package.json         # Dependencies
+- [Restructure Guide](docs/RESTRUCTURE_GUIDE.md) - Details about the new architecture
+- [Quick Start](docs/QUICK_START.md) - Getting started guide
+- [Expo Setup](docs/EXPO_GO_SETUP.md) - Expo Go configuration
 
-```
+## Development
 
-## 🔧 Tech Stack
+The project uses a feature-based architecture where each feature is self-contained with its own:
+- Components
+- Screens
+- Context/State
+- Hooks
+- Types (if feature-specific)
 
-- **Framework**: React Native with Expo
-- **Navigation**: React Navigation v7
-- **State Management**: React Context API
-- **Storage**: AsyncStorage
-- **Language**: TypeScript
-- **Styling**: StyleSheet API with theme system
+Shared code is explicitly separated in the `shared/` directory, and core functionality lives in `core/`.
 
-## 🎯 Demo Mode
+## License
 
-The app runs in demo mode with mock authentication:
-- Login with any email/password
-- User login → "John Smith" (demo user)
-- Provider login → "Tom Electric" (demo provider)
-- All data is mock data for demonstration
-
-## 📚 Documentation
-
-Additional documentation is available in the `docs/` folder:
-- Theme implementation guide
-- Expo Go setup instructions
-- Feature documentation
-- Development guides
-
-## 🛠️ Development
-
-### Available Scripts
-
-```bash
-npm start          # Start Expo development server
-npm run start:clear # Start with cleared cache
-npm run android    # Open on Android
-npm run ios        # Open on iOS
-npm run web        # Open in web browser
-```
-
-### Code Organization
-
-- Use `useTheme()` hook for theme colors
-- Import constants from `utils/constants.ts`
-- Follow existing folder structure for new features
-- Use TypeScript for type safety
-
-## 📝 License
-
-Private project - All rights reserved
-
-## 👥 Contributing
-
-This is a private project. For questions or issues, contact the development team.
+Private
