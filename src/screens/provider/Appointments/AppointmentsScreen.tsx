@@ -621,44 +621,46 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.BACKGROUND,
   },
   
-  // Header with gradient
+  // Compact header with gradient
   headerGradient: {
-    paddingTop: SPACING.xxxl,
-    paddingBottom: SPACING.xl,
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.md,
   },
   
   headerContent: {
     paddingHorizontal: SPACING.lg,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.sm,
   },
   
   headerTitle: {
-    fontSize: FONT_SIZE.xxxl,
+    fontSize: FONT_SIZE.xl,
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.WHITE,
-    marginBottom: SPACING.xs,
   },
   
   headerSubtitle: {
-    fontSize: FONT_SIZE.lg,
+    fontSize: FONT_SIZE.sm,
     color: COLORS.WHITE,
-    opacity: 0.9,
+    opacity: 0.85,
+    marginTop: 2,
   },
   
-  // Stats with glassmorphism
+  // Compact stats with glassmorphism
   statsContainer: {
     flexDirection: "row",
     paddingHorizontal: SPACING.lg,
-    gap: SPACING.md,
+    gap: SPACING.sm,
   },
   
   statCard: {
     flex: 1,
-    borderRadius: BORDER_RADIUS.xl,
-    padding: SPACING.lg,
+    borderRadius: BORDER_RADIUS.lg,
+    padding: SPACING.sm,
     alignItems: "center",
     position: 'relative',
     overflow: 'hidden',
+    minHeight: 60,
+    justifyContent: 'center',
   },
   
   statGlass: {
@@ -667,24 +669,24 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    borderRadius: BORDER_RADIUS.xl,
+    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    borderRadius: BORDER_RADIUS.lg,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   
   statValue: {
-    fontSize: FONT_SIZE.xxl,
+    fontSize: FONT_SIZE.xl,
     fontWeight: FONT_WEIGHT.bold,
     color: COLORS.WHITE,
-    marginBottom: 4,
+    marginBottom: 2,
     zIndex: 1,
   },
   
   statLabel: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.xs,
     color: COLORS.WHITE,
-    opacity: 0.8,
+    opacity: 0.85,
     fontWeight: FONT_WEIGHT.medium,
     zIndex: 1,
   },
