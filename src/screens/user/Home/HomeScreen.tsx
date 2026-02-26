@@ -6,22 +6,31 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  TextInput,
   ScrollView,
+  RefreshControl,
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from "../../../context/AuthContext";
 import { getAllServices } from "../../../services/mock/mockData";
 import { Service } from "../../../types/service";
-import { COLORS, SPACING, FONT_SIZE, SERVICE_CATEGORIES } from "../../../utils/constants";
+import { COLORS, SPACING, FONT_SIZE, FONT_WEIGHT, BORDER_RADIUS, SHADOWS, SERVICE_CATEGORIES } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
+import ModernHeader from "../../../components/common/ModernHeader";
+import ModernInput from "../../../components/common/ModernInput";
+import GradientButton from "../../../components/common/GradientButton";
+import ServiceCard from "../../../components/common/ServiceCard";
+import LocationSelector from "../../../components/common/LocationSelector";
 
 export default function HomeScreen({ navigation }: any) {
   const { currentUser } = useAuth();
   const [services, setServices] = useState<Service[]>([]);
   const [filteredServices, setFilteredServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<string>("");
+  const [showLocationSelector, setShowLocationSelector] = useState(false);
   
   useEffect(() => {
     loadServices();
@@ -44,129 +53,239 @@ export default function HomeScreen({ navigation }: any) {
       filtered = filtered.filter((s) => s.category === selectedCategory);
     }
 
+    // Filter by location
+    if (selectedLocation && selectedLocation !== 'Current Location') {
+      filtered = filtered.filter((s) => s.state === selectedLocation);
+    }
+
     setFilteredServices(filtered);
-  }, [searchQuery, selectedCategory, services]);
+  }, [searchQuery, selectedCategory, services, selectedLocation]);
 
   const loadServices = async () => {
     setLoading(true);
-    const data = await getAllServices();
-    setServices(data);
-    setFilteredServices(data);
-    setLoading(false);
+    try {
+      const data = await getAllServices();
+      setServices(data);
+      setFilteredServices(data);
+    } catch (error) {
+      console.error('Error loading services:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const renderService = ({ item }: { item: Service }) => (
-    <TouchableOpacity
-      style={styles.serviceCard}
-      onPress={() => navigation.navigate("ServiceDetail", { service: item })}
-      activeOpacity={0.7}
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadServices();
+    setRefreshing(false);
+  };
+
+  const handleLocationSelect = (location: string) => {
+    setSelectedLocation(location);
+  };
+
+  const renderWelcomeSection = () => (
+    <LinearGradient
+      colors={COLORS.PRIMARY_GRADIENT}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.welcomeSection}
     >
-      <View style={styles.imageContainer}>
-        <View style={styles.imagePlaceholder}>
-          <Text style={styles.imageIcon}>📸</Text>
-        </View>
-        <View style={styles.ratingBadge}>
-          <Text style={styles.ratingBadgeText}>⭐ {item.rating?.toFixed(1)}</Text>
-        </View>
-      </View>
-      <View style={styles.cardContent}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.title} numberOfLines={1}>
-            {item.title}
-          </Text>
-          <Text style={styles.price}>{formatPrice(item.price)}</Text>
-        </View>
-        <Text style={styles.category}>{item.category}</Text>
-        <Text style={styles.description} numberOfLines={2}>
-          {item.description}
+      <View style={styles.welcomeContent}>
+        <Text style={styles.welcomeTitle}>
+          Hello, {currentUser?.name?.split(' ')[0] || 'User'}! 👋
         </Text>
-        <View style={styles.footer}>
-          <Text style={styles.location}>
-            📍 {item.city ? `${item.city}, ${item.state}` : item.state}
-          </Text>
-          <Text style={styles.jobs}>📦 {item.completedJobs || 0} jobs</Text>
+        <Text style={styles.welcomeSubtitle}>
+          Find trusted local services in your area
+        </Text>
+        {selectedLocation && (
+          <View style={styles.locationBadge}>
+            <Text style={styles.locationBadgeText}>
+              📍 {selectedLocation}
+            </Text>
+          </View>
+        )}
+      </View>
+      
+      <View style={styles.statsContainer}>
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>{filteredServices.length}</Text>
+          <Text style={styles.statLabel}>Services</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>4.8</Text>
+          <Text style={styles.statLabel}>Avg Rating</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statNumber}>24/7</Text>
+          <Text style={styles.statLabel}>Support</Text>
         </View>
       </View>
+    </LinearGradient>
+  );
+
+  const renderSearchSection = () => (
+    <View style={styles.searchSection}>
+      <ModernInput
+        placeholder="Search services, providers..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        leftIcon={<Text style={styles.searchIcon}>🔍</Text>}
+        variant="filled"
+        containerStyle={styles.searchInput}
+      />
+      
+      <TouchableOpacity
+        style={styles.locationButton}
+        onPress={() => setShowLocationSelector(true)}
+        activeOpacity={0.8}
+      >
+        <LinearGradient
+          colors={['rgba(99, 102, 241, 0.1)', 'rgba(139, 92, 246, 0.05)']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.locationButtonGradient}
+        >
+          <Text style={styles.locationButtonIcon}>📍</Text>
+          <Text style={styles.locationButtonText}>
+            {selectedLocation || 'Select Location'}
+          </Text>
+          <Text style={styles.locationButtonArrow}>▼</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderCategoryChip = (category: string, isSelected: boolean) => (
+    <TouchableOpacity
+      key={category}
+      style={[
+        styles.categoryChip,
+        isSelected && styles.categoryChipActive,
+      ]}
+      onPress={() => setSelectedCategory(isSelected ? null : category)}
+      activeOpacity={0.8}
+    >
+      <LinearGradient
+        colors={isSelected ? COLORS.PRIMARY_GRADIENT : [COLORS.GRAY_100, COLORS.GRAY_100]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.categoryChipGradient}
+      >
+        <Text style={[
+          styles.categoryChipText,
+          isSelected && styles.categoryChipTextActive,
+        ]}>
+          {category}
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
+  );
+
+  const renderCategoriesSection = () => (
+    <View style={styles.categoriesSection}>
+      <Text style={styles.sectionTitle}>Categories</Text>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.categoriesContainer}
+      >
+        {renderCategoryChip("All", !selectedCategory)}
+        {SERVICE_CATEGORIES.map((category) =>
+          renderCategoryChip(category, selectedCategory === category)
+        )}
+      </ScrollView>
+    </View>
+  );
+
+  const renderFeaturedServices = () => {
+    const featuredServices = filteredServices.slice(0, 2);
+    if (featuredServices.length === 0) return null;
+
+    return (
+      <View style={styles.featuredSection}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Featured Services</Text>
+          <TouchableOpacity onPress={() => {}}>
+            <Text style={styles.seeAllText}>See All →</Text>
+          </TouchableOpacity>
+        </View>
+        {featuredServices.map((service) => (
+          <ServiceCard
+            key={service.id}
+            service={service}
+            onPress={() => navigation.navigate("ServiceDetail", { service })}
+            variant="featured"
+          />
+        ))}
+      </View>
+    );
+  };
+
+  const renderServiceItem = ({ item }: { item: Service }) => (
+    <ServiceCard
+      service={item}
+      onPress={() => navigation.navigate("ServiceDetail", { service: item })}
+      variant="default"
+    />
   );
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.PRIMARY} />
+      <View style={styles.loadingContainer}>
+        <LinearGradient
+          colors={COLORS.PRIMARY_GRADIENT}
+          style={styles.loadingGradient}
+        >
+          <ActivityIndicator size="large" color={COLORS.WHITE} />
+          <Text style={styles.loadingText}>Loading services...</Text>
+        </LinearGradient>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.greeting}>Hello, {currentUser?.name}!</Text>
-        <Text style={styles.subtitle}>Find local services</Text>
-      </View>
-
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search services..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor={COLORS.TEXT_SECONDARY}
-        />
-        <TouchableOpacity
-          style={styles.locationButton}
-          onPress={() => navigation.navigate("Search")}
-        >
-          <Text style={styles.locationButtonText}>📍 Search by Location</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Category Filters */}
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesContainer}
-        contentContainerStyle={styles.categoriesContent}
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
       >
-        <TouchableOpacity
-          style={[styles.categoryChip, !selectedCategory && styles.categoryChipActive]}
-          onPress={() => setSelectedCategory(null)}
-        >
-          <Text style={[styles.categoryText, !selectedCategory && styles.categoryTextActive]}>
-            All
-          </Text>
-        </TouchableOpacity>
-        {SERVICE_CATEGORIES.map((category) => (
-          <TouchableOpacity
-            key={category}
-            style={[
-              styles.categoryChip,
-              selectedCategory === category && styles.categoryChipActive,
-            ]}
-            onPress={() => setSelectedCategory(category)}
-          >
-            <Text
-              style={[
-                styles.categoryText,
-                selectedCategory === category && styles.categoryTextActive,
-              ]}
-            >
-              {category}
-            </Text>
-          </TouchableOpacity>
-        ))}
+        {renderWelcomeSection()}
+        {renderSearchSection()}
+        {renderCategoriesSection()}
+        {renderFeaturedServices()}
+        
+        <View style={styles.servicesSection}>
+          <Text style={styles.sectionTitle}>All Services</Text>
+          <FlatList
+            data={filteredServices.slice(2)} // Skip featured services
+            renderItem={renderServiceItem}
+            keyExtractor={(item) => item.id}
+            scrollEnabled={false}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyIcon}>🔍</Text>
+                <Text style={styles.emptyTitle}>No services found</Text>
+                <Text style={styles.emptyText}>
+                  Try adjusting your search, category, or location filter
+                </Text>
+              </View>
+            }
+          />
+        </View>
+        
+        <View style={styles.bottomSpacer} />
       </ScrollView>
 
-      <FlatList
-        data={filteredServices}
-        renderItem={renderService}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        ListEmptyComponent={
-          <View style={styles.empty}>
-            <Text style={styles.emptyText}>No services found</Text>
-          </View>
-        }
+      {/* Location Selector Modal */}
+      <LocationSelector
+        isVisible={showLocationSelector}
+        onClose={() => setShowLocationSelector(false)}
+        onSelectLocation={handleLocationSelect}
+        selectedLocation={selectedLocation}
       />
     </View>
   );
@@ -175,172 +294,245 @@ export default function HomeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.SURFACE,
+    backgroundColor: COLORS.BACKGROUND,
   },
-  centered: {
+  
+  scrollView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
-  header: {
-    backgroundColor: COLORS.PRIMARY,
-    padding: SPACING.lg,
-    paddingTop: SPACING.xl,
+  
+  loadingContainer: {
+    flex: 1,
   },
-  greeting: {
-    fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
-    color: COLORS.TEXT_LIGHT,
-    marginBottom: 4,
+  
+  loadingGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  subtitle: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.TEXT_LIGHT,
+  
+  loadingText: {
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: FONT_WEIGHT.medium,
+    marginTop: SPACING.md,
   },
-  searchContainer: {
-    padding: SPACING.md,
-    backgroundColor: COLORS.CARD,
+  
+  // Welcome section
+  welcomeSection: {
+    paddingTop: SPACING.xxxl,
+    paddingHorizontal: SPACING.lg,
+    paddingBottom: SPACING.xl,
   },
-  searchInput: {
-    backgroundColor: COLORS.INPUT_BACKGROUND,
-    borderRadius: 8,
-    padding: SPACING.md,
-    fontSize: FONT_SIZE.md,
-    color: COLORS.TEXT_PRIMARY,
+  
+  welcomeContent: {
+    marginBottom: SPACING.xl,
+  },
+  
+  welcomeTitle: {
+    fontSize: FONT_SIZE.xxxl,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.WHITE,
     marginBottom: SPACING.sm,
   },
-  locationButton: {
-    backgroundColor: COLORS.PRIMARY,
-    borderRadius: 8,
+  
+  welcomeSubtitle: {
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.WHITE,
+    opacity: 0.9,
+  },
+  
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  
+  statCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: BORDER_RADIUS.lg,
     padding: SPACING.md,
-    alignItems: "center",
+    alignItems: 'center',
+    flex: 1,
+    marginHorizontal: SPACING.xs,
   },
-  locationButtonText: {
-    color: COLORS.TEXT_LIGHT,
-    fontSize: FONT_SIZE.md,
-    fontWeight: "600",
+  
+  statNumber: {
+    fontSize: FONT_SIZE.xl,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.WHITE,
   },
-  categoriesContainer: {
-    backgroundColor: COLORS.CARD,
+  
+  statLabel: {
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.WHITE,
+    opacity: 0.8,
+    marginTop: 2,
+  },
+  
+  // Search section
+  searchSection: {
+    padding: SPACING.lg,
+    backgroundColor: COLORS.WHITE,
+    marginTop: -SPACING.lg,
+    borderTopLeftRadius: BORDER_RADIUS.xxl,
+    borderTopRightRadius: BORDER_RADIUS.xxl,
+    ...SHADOWS.medium,
+  },
+  
+  searchInput: {
+    marginBottom: SPACING.md,
+  },
+  
+  searchIcon: {
+    fontSize: 20,
+  },
+  
+  locationButton: {
+    borderRadius: BORDER_RADIUS.lg,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: COLORS.PRIMARY + '30',
+    ...SHADOWS.small,
+  },
+  
+  locationButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
   },
-  categoriesContent: {
-    paddingHorizontal: SPACING.md,
-    gap: SPACING.sm,
+  
+  locationButtonIcon: {
+    fontSize: 18,
+    marginRight: SPACING.sm,
   },
-  categoryChip: {
+  
+  locationButtonText: {
+    fontSize: FONT_SIZE.md,
+    fontWeight: FONT_WEIGHT.semibold,
+    color: COLORS.PRIMARY,
+    flex: 1,
+    textAlign: 'center',
+  },
+  
+  locationButtonArrow: {
+    fontSize: 12,
+    color: COLORS.PRIMARY,
+    marginLeft: SPACING.sm,
+  },
+  
+  locationBadge: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    borderRadius: 20,
-    backgroundColor: COLORS.INPUT_BACKGROUND,
-    marginRight: SPACING.sm,
+    borderRadius: BORDER_RADIUS.full,
+    marginTop: SPACING.md,
+    alignSelf: 'flex-start',
   },
-  categoryChipActive: {
-    backgroundColor: COLORS.PRIMARY,
-  },
-  categoryText: {
+  
+  locationBadgeText: {
+    color: COLORS.WHITE,
     fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
-    fontWeight: "600",
+    fontWeight: FONT_WEIGHT.medium,
   },
-  categoryTextActive: {
-    color: COLORS.TEXT_LIGHT,
+  
+  // Categories section
+  categoriesSection: {
+    paddingVertical: SPACING.lg,
+    backgroundColor: COLORS.WHITE,
   },
-  list: {
-    padding: SPACING.md,
-  },
-  serviceCard: {
-    backgroundColor: COLORS.CARD,
-    borderRadius: 16,
-    marginBottom: SPACING.md,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    overflow: "hidden",
-  },
-  imageContainer: {
-    position: "relative",
-  },
-  imagePlaceholder: {
-    width: "100%",
-    height: 180,
-    backgroundColor: COLORS.SURFACE,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  imageIcon: {
-    fontSize: 48,
-  },
-  ratingBadge: {
-    position: "absolute",
-    top: SPACING.sm,
-    right: SPACING.sm,
-    backgroundColor: COLORS.CARD,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  ratingBadgeText: {
-    fontSize: FONT_SIZE.sm,
-    fontWeight: "600",
-  },
-  cardContent: {
-    padding: SPACING.md,
-  },
-  cardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: SPACING.sm,
-  },
-  title: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
+  
+  sectionTitle: {
+    fontSize: FONT_SIZE.xl,
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.TEXT_PRIMARY,
-    flex: 1,
-    marginRight: SPACING.sm,
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.lg,
   },
-  price: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
+  
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+  },
+  
+  seeAllText: {
+    fontSize: FONT_SIZE.md,
     color: COLORS.PRIMARY,
+    fontWeight: FONT_WEIGHT.semibold,
   },
-  category: {
-    fontSize: FONT_SIZE.sm,
+  
+  categoriesContainer: {
+    paddingHorizontal: SPACING.lg,
+  },
+  
+  categoryChip: {
+    marginRight: SPACING.md,
+    borderRadius: BORDER_RADIUS.full,
+    overflow: 'hidden',
+  },
+  
+  categoryChipGradient: {
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+  },
+  
+  categoryChipActive: {
+    ...SHADOWS.small,
+  },
+  
+  categoryChipText: {
+    fontSize: FONT_SIZE.md,
+    fontWeight: FONT_WEIGHT.semibold,
     color: COLORS.TEXT_SECONDARY,
+  },
+  
+  categoryChipTextActive: {
+    color: COLORS.WHITE,
+  },
+  
+  // Featured section
+  featuredSection: {
+    paddingVertical: SPACING.lg,
+    paddingHorizontal: SPACING.lg,
+    backgroundColor: COLORS.GRAY_50,
+  },
+  
+  // Services section
+  servicesSection: {
+    padding: SPACING.lg,
+    backgroundColor: COLORS.WHITE,
+  },
+  
+  // Empty state
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: SPACING.xxxl,
+  },
+  
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: SPACING.lg,
+  },
+  
+  emptyTitle: {
+    fontSize: FONT_SIZE.xl,
+    fontWeight: FONT_WEIGHT.semibold,
+    color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
-  description: {
+  
+  emptyText: {
     fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_SECONDARY,
-    marginBottom: SPACING.sm,
+    textAlign: 'center',
+    lineHeight: 22,
   },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: SPACING.sm,
-  },
-  location: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
-  },
-  jobs: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
-  },
-  empty: {
-    alignItems: "center",
-    marginTop: SPACING.xxl,
-  },
-  emptyText: {
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.TEXT_SECONDARY,
+  
+  bottomSpacer: {
+    height: SPACING.xxxl,
   },
 });

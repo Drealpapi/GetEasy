@@ -10,14 +10,18 @@ import {
   TextInput,
   Alert,
   ScrollView,
+  Dimensions,
 } from "react-native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { Booking } from "../../../types/booking";
 import { getBookingsForProvider, updateBookingStatus, rescheduleBooking } from "../../../services/mock/mockData";
 import { useAuth } from "../../../context/AuthContext";
-import { COLORS, SPACING, FONT_SIZE } from "../../../utils/constants";
+import { COLORS, SPACING, FONT_SIZE, FONT_WEIGHT, BORDER_RADIUS, SHADOWS } from "../../../utils/constants";
 import { formatPrice } from "../../../utils/helpers";
 
 type FilterType = "all" | "pending" | "accepted" | "upcoming" | "completed" | "past";
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function AppointmentsScreen() {
   const { currentUser } = useAuth();
@@ -222,7 +226,7 @@ export default function AppointmentsScreen() {
       case "Declined":
         return COLORS.ERROR;
       case "Rescheduled":
-        return "#3b82f6";
+        return COLORS.INFO;
       default:
         return COLORS.TEXT_SECONDARY;
     }
@@ -248,6 +252,7 @@ export default function AppointmentsScreen() {
   const renderBookingCard = ({ item }: { item: Booking }) => {
     const bookingDate = new Date(item.date);
     const isUpcoming = bookingDate >= new Date();
+    const statusColor = getStatusColor(item.status);
 
     return (
       <TouchableOpacity
@@ -256,52 +261,71 @@ export default function AppointmentsScreen() {
           setSelectedBooking(item);
           setShowActionModal(true);
         }}
-        activeOpacity={0.7}
+        activeOpacity={0.9}
       >
+        {/* Glassmorphism overlay */}
+        <View style={styles.cardGlassOverlay} />
+        
         <View style={styles.cardHeader}>
-          <View style={styles.statusBadge} >
-            <Text style={styles.statusText}>
+          <View style={[styles.statusBadge, { backgroundColor: statusColor + '20' }]}>
+            <Text style={[styles.statusText, { color: statusColor }]}>
               {getStatusIcon(item.status)} {item.status}
             </Text>
           </View>
           {isUpcoming && (
-            <View style={styles.upcomingBadge}>
+            <LinearGradient
+              colors={[COLORS.INFO, COLORS.INFO + '80']}
+              style={styles.upcomingBadge}
+            >
               <Text style={styles.upcomingText}>Upcoming</Text>
-            </View>
+            </LinearGradient>
           )}
         </View>
 
         <Text style={styles.serviceTitle}>{item.serviceTitle}</Text>
         <Text style={styles.customerName}>👤 {item.userName}</Text>
 
-        <View style={styles.detailsRow}>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailIcon}>📅</Text>
-            <Text style={styles.detailText}>{item.date}</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.detailRow}>
+            <View style={styles.detailItem}>
+              <View style={styles.detailIconContainer}>
+                <Text style={styles.detailIcon}>📅</Text>
+              </View>
+              <Text style={styles.detailText}>{item.date}</Text>
+            </View>
+            <View style={styles.detailItem}>
+              <View style={styles.detailIconContainer}>
+                <Text style={styles.detailIcon}>⏰</Text>
+              </View>
+              <Text style={styles.detailText}>{item.time}</Text>
+            </View>
           </View>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailIcon}>⏰</Text>
-            <Text style={styles.detailText}>{item.time}</Text>
-          </View>
-        </View>
 
-        <View style={styles.detailsRow}>
-          <View style={styles.detailItem}>
-            <Text style={styles.detailIcon}>📍</Text>
-            <Text style={styles.detailText} numberOfLines={1}>
-              {item.address}
-            </Text>
+          <View style={styles.detailRow}>
+            <View style={[styles.detailItem, { flex: 1 }]}>
+              <View style={styles.detailIconContainer}>
+                <Text style={styles.detailIcon}>📍</Text>
+              </View>
+              <Text style={styles.detailText} numberOfLines={1}>
+                {item.address}
+              </Text>
+            </View>
           </View>
         </View>
 
         <View style={styles.cardFooter}>
-          <Text style={styles.price}>{formatPrice(item.servicePrice || 0)}</Text>
-          <Text style={styles.phone}>📞 {item.userPhone}</Text>
+          <View style={styles.priceContainer}>
+            <Text style={styles.price}>{formatPrice(item.servicePrice || 0)}</Text>
+          </View>
+          <TouchableOpacity style={styles.phoneButton} activeOpacity={0.8}>
+            <Text style={styles.phoneIcon}>📞</Text>
+            <Text style={styles.phoneText}>{item.userPhone}</Text>
+          </TouchableOpacity>
         </View>
 
         {item.notes && (
           <View style={styles.notesContainer}>
-            <Text style={styles.notesLabel}>Notes:</Text>
+            <Text style={styles.notesLabel}>💬 Notes</Text>
             <Text style={styles.notesText}>{item.notes}</Text>
           </View>
         )}
@@ -309,22 +333,40 @@ export default function AppointmentsScreen() {
     );
   };
 
-  const renderFilterButton = (filterType: FilterType, label: string, count: number) => (
-    <TouchableOpacity
-      style={[styles.filterButton, filter === filterType && styles.filterButtonActive]}
-      onPress={() => setFilter(filterType)}
-    >
-      <Text style={[styles.filterText, filter === filterType && styles.filterTextActive]}>
-        {label}
-      </Text>
-      <View style={[styles.countBadge, filter === filterType && styles.countBadgeActive]}>
-        <Text style={[styles.countText, filter === filterType && styles.countTextActive]}>
-          {count}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderFilterButton = (filterType: FilterType, label: string, count: number) => {
+    const isActive = filter === filterType;
+    
+    return (
+      <TouchableOpacity
+        style={[styles.filterButton, isActive && styles.filterButtonActive]}
+        onPress={() => setFilter(filterType)}
+        activeOpacity={0.8}
+      >
+        {isActive ? (
+          <LinearGradient
+            colors={COLORS.PRIMARY_GRADIENT}
+            style={styles.filterButtonGradient}
+          >
+            <Text style={[styles.filterText, styles.filterTextActive]}>
+              {label}
+            </Text>
+            <View style={styles.countBadgeActive}>
+              <Text style={styles.countTextActive}>{count}</Text>
+            </View>
+          </LinearGradient>
+        ) : (
+          <View style={styles.filterButtonContent}>
+            <Text style={styles.filterText}>{label}</Text>
+            <View style={styles.countBadge}>
+              <Text style={styles.countText}>{count}</Text>
+            </View>
+          </View>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
+  // Calculate counts
   const pendingCount = bookings.filter((b) => b.status === "Pending").length;
   const acceptedCount = bookings.filter((b) => b.status === "Accepted").length;
   const upcomingCount = bookings.filter((b) => {
@@ -336,40 +378,56 @@ export default function AppointmentsScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header Stats */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statCard}>
-          <Text style={styles.statValue}>{bookings.length}</Text>
-          <Text style={styles.statLabel}>Total</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={[styles.statValue, { color: COLORS.WARNING }]}>{pendingCount}</Text>
-          <Text style={styles.statLabel}>Pending</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={[styles.statValue, { color: COLORS.SUCCESS }]}>{upcomingCount}</Text>
-          <Text style={styles.statLabel}>Upcoming</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={[styles.statValue, { color: COLORS.PRIMARY }]}>{completedCount}</Text>
-          <Text style={styles.statLabel}>Completed</Text>
-        </View>
-      </View>
-
-      {/* Filters */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.filtersContainer}
-        contentContainerStyle={styles.filtersContent}
+      {/* Header with gradient background */}
+      <LinearGradient
+        colors={COLORS.PRIMARY_GRADIENT}
+        style={styles.headerGradient}
       >
-        {renderFilterButton("all", "All", bookings.length)}
-        {renderFilterButton("pending", "Pending", pendingCount)}
-        {renderFilterButton("accepted", "Accepted", acceptedCount)}
-        {renderFilterButton("upcoming", "Upcoming", upcomingCount)}
-        {renderFilterButton("completed", "Completed", completedCount)}
-        {renderFilterButton("past", "Past", pastCount)}
-      </ScrollView>
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Appointments</Text>
+          <Text style={styles.headerSubtitle}>Manage your bookings</Text>
+        </View>
+        
+        {/* Stats Cards with glassmorphism */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statCard}>
+            <View style={styles.statGlass} />
+            <Text style={styles.statValue}>{bookings.length}</Text>
+            <Text style={styles.statLabel}>Total</Text>
+          </View>
+          <View style={styles.statCard}>
+            <View style={styles.statGlass} />
+            <Text style={[styles.statValue, { color: COLORS.WARNING }]}>{pendingCount}</Text>
+            <Text style={styles.statLabel}>Pending</Text>
+          </View>
+          <View style={styles.statCard}>
+            <View style={styles.statGlass} />
+            <Text style={[styles.statValue, { color: COLORS.SUCCESS }]}>{upcomingCount}</Text>
+            <Text style={styles.statLabel}>Upcoming</Text>
+          </View>
+          <View style={styles.statCard}>
+            <View style={styles.statGlass} />
+            <Text style={[styles.statValue, { color: COLORS.WHITE }]}>{completedCount}</Text>
+            <Text style={styles.statLabel}>Completed</Text>
+          </View>
+        </View>
+      </LinearGradient>
+
+      {/* Filters with improved spacing */}
+      <View style={styles.filtersSection}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filtersContainer}
+        >
+          {renderFilterButton("all", "All", bookings.length)}
+          {renderFilterButton("pending", "Pending", pendingCount)}
+          {renderFilterButton("accepted", "Accepted", acceptedCount)}
+          {renderFilterButton("upcoming", "Upcoming", upcomingCount)}
+          {renderFilterButton("completed", "Completed", completedCount)}
+          {renderFilterButton("past", "Past", pastCount)}
+        </ScrollView>
+      </View>
 
       {/* Bookings List */}
       <FlatList
@@ -378,17 +436,24 @@ export default function AppointmentsScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>📅</Text>
-            <Text style={styles.emptyText}>No appointments found</Text>
-            <Text style={styles.emptySubtext}>
-              {filter !== "all" ? "Try changing the filter" : "New bookings will appear here"}
-            </Text>
+            <LinearGradient
+              colors={['rgba(99, 102, 241, 0.1)', 'rgba(139, 92, 246, 0.05)']}
+              style={styles.emptyGradient}
+            >
+              <Text style={styles.emptyIcon}>📅</Text>
+              <Text style={styles.emptyText}>No appointments found</Text>
+              <Text style={styles.emptySubtext}>
+                {filter !== "all" ? "Try changing the filter" : "New bookings will appear here"}
+              </Text>
+            </LinearGradient>
           </View>
         }
       />
 
+      {/* Rest of the modals remain the same but with updated styling */}
       {/* Action Modal */}
       <Modal
         visible={showActionModal}
@@ -398,9 +463,13 @@ export default function AppointmentsScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
+            <View style={styles.modalGlass} />
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Appointment Actions</Text>
-              <TouchableOpacity onPress={() => setShowActionModal(false)}>
+              <TouchableOpacity 
+                style={styles.closeButtonContainer}
+                onPress={() => setShowActionModal(false)}
+              >
                 <Text style={styles.closeButton}>✕</Text>
               </TouchableOpacity>
             </View>
@@ -491,6 +560,7 @@ export default function AppointmentsScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.rescheduleModal}>
+            <View style={styles.modalGlass} />
             <Text style={styles.modalTitle}>Reschedule Appointment</Text>
 
             <View style={styles.inputGroup}>
@@ -530,7 +600,12 @@ export default function AppointmentsScreen() {
                 style={[styles.rescheduleButton, styles.confirmReschedule]}
                 onPress={handleReschedule}
               >
-                <Text style={styles.confirmRescheduleText}>Confirm</Text>
+                <LinearGradient
+                  colors={COLORS.PRIMARY_GRADIENT}
+                  style={styles.confirmRescheduleGradient}
+                >
+                  <Text style={styles.confirmRescheduleText}>Confirm</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </View>
@@ -543,355 +618,585 @@ export default function AppointmentsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.SURFACE,
+    backgroundColor: COLORS.BACKGROUND,
   },
+  
+  // Header with gradient
+  headerGradient: {
+    paddingTop: SPACING.xxxl,
+    paddingBottom: SPACING.xl,
+  },
+  
+  headerContent: {
+    paddingHorizontal: SPACING.lg,
+    marginBottom: SPACING.lg,
+  },
+  
+  headerTitle: {
+    fontSize: FONT_SIZE.xxxl,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.WHITE,
+    marginBottom: SPACING.xs,
+  },
+  
+  headerSubtitle: {
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.WHITE,
+    opacity: 0.9,
+  },
+  
+  // Stats with glassmorphism
   statsContainer: {
     flexDirection: "row",
-    padding: SPACING.md,
-    gap: SPACING.sm,
-    backgroundColor: COLORS.CARD,
+    paddingHorizontal: SPACING.lg,
+    gap: SPACING.md,
   },
+  
   statCard: {
     flex: 1,
-    backgroundColor: COLORS.SURFACE,
-    borderRadius: 12,
-    padding: SPACING.md,
+    borderRadius: BORDER_RADIUS.xl,
+    padding: SPACING.lg,
     alignItems: "center",
+    position: 'relative',
+    overflow: 'hidden',
   },
+  
+  statGlass: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: BORDER_RADIUS.xl,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+  },
+  
   statValue: {
-    fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
-    color: COLORS.TEXT_PRIMARY,
+    fontSize: FONT_SIZE.xxl,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.WHITE,
     marginBottom: 4,
+    zIndex: 1,
   },
+  
   statLabel: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.TEXT_SECONDARY,
+    fontSize: FONT_SIZE.sm,
+    color: COLORS.WHITE,
+    opacity: 0.8,
+    fontWeight: FONT_WEIGHT.medium,
+    zIndex: 1,
   },
-  filtersContainer: {
-    backgroundColor: COLORS.CARD,
+  
+  // Filters section
+  filtersSection: {
+    backgroundColor: COLORS.WHITE,
+    paddingVertical: SPACING.lg,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.SURFACE,
+    borderBottomColor: COLORS.BORDER,
   },
-  filtersContent: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    gap: SPACING.sm,
+  
+  filtersContainer: {
+    paddingHorizontal: SPACING.lg,
+    gap: SPACING.md,
   },
+  
   filterButton: {
+    borderRadius: BORDER_RADIUS.full,
+    overflow: 'hidden',
+    marginRight: SPACING.sm,
+  },
+  
+  filterButtonActive: {
+    ...SHADOWS.medium,
+  },
+  
+  filterButtonGradient: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    borderRadius: 20,
-    backgroundColor: COLORS.SURFACE,
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
     gap: SPACING.sm,
   },
-  filterButtonActive: {
-    backgroundColor: COLORS.PRIMARY,
+  
+  filterButtonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.md,
+    backgroundColor: COLORS.GRAY_100,
+    gap: SPACING.sm,
   },
+  
   filterText: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_SECONDARY,
-    fontWeight: "600",
+    fontWeight: FONT_WEIGHT.semibold,
   },
+  
   filterTextActive: {
-    color: COLORS.CARD,
+    color: COLORS.WHITE,
   },
+  
   countBadge: {
-    backgroundColor: COLORS.CARD,
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: BORDER_RADIUS.full,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 4,
     minWidth: 24,
     alignItems: "center",
   },
+  
   countBadgeActive: {
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   },
+  
   countText: {
     fontSize: FONT_SIZE.xs,
     color: COLORS.TEXT_PRIMARY,
-    fontWeight: "bold",
+    fontWeight: FONT_WEIGHT.bold,
   },
+  
   countTextActive: {
-    color: COLORS.CARD,
+    color: COLORS.WHITE,
   },
+  
+  // List content
   listContent: {
-    padding: SPACING.md,
+    padding: SPACING.lg,
   },
+  
+  // Modern booking cards with glassmorphism
   bookingCard: {
-    backgroundColor: COLORS.CARD,
-    borderRadius: 16,
-    padding: SPACING.md,
-    marginBottom: SPACING.md,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: BORDER_RADIUS.xxl,
+    padding: SPACING.lg,
+    marginBottom: SPACING.lg,
+    position: 'relative',
+    overflow: 'hidden',
+    ...SHADOWS.large,
   },
+  
+  cardGlassOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    backgroundColor: 'rgba(99, 102, 241, 0.05)',
+    borderTopLeftRadius: BORDER_RADIUS.xxl,
+    borderTopRightRadius: BORDER_RADIUS.xxl,
+  },
+  
   cardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.md,
+    zIndex: 1,
   },
+  
   statusBadge: {
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    borderRadius: 16,
+    borderRadius: BORDER_RADIUS.full,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
+  
   statusText: {
-    color: COLORS.CARD,
-    fontSize: FONT_SIZE.xs,
-    fontWeight: "bold",
+    fontSize: FONT_SIZE.sm,
+    fontWeight: FONT_WEIGHT.bold,
   },
+  
   upcomingBadge: {
-    backgroundColor: "#3b82f6",
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.full,
   },
+  
   upcomingText: {
-    color: COLORS.CARD,
+    color: COLORS.WHITE,
     fontSize: FONT_SIZE.xs,
-    fontWeight: "600",
+    fontWeight: FONT_WEIGHT.bold,
   },
+  
   serviceTitle: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
+    fontSize: FONT_SIZE.xl,
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
+  
   customerName: {
-    fontSize: FONT_SIZE.md,
+    fontSize: FONT_SIZE.lg,
     color: COLORS.TEXT_SECONDARY,
-    marginBottom: SPACING.sm,
+    marginBottom: SPACING.md,
+    fontWeight: FONT_WEIGHT.medium,
   },
-  detailsRow: {
+  
+  // Modern details container
+  detailsContainer: {
+    backgroundColor: COLORS.GRAY_50,
+    borderRadius: BORDER_RADIUS.lg,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  
+  detailRow: {
     flexDirection: "row",
     marginBottom: SPACING.sm,
-    gap: SPACING.md,
+    gap: SPACING.lg,
   },
+  
   detailItem: {
     flexDirection: "row",
     alignItems: "center",
     flex: 1,
   },
+  
+  detailIconContainer: {
+    width: 32,
+    height: 32,
+    borderRadius: BORDER_RADIUS.lg,
+    backgroundColor: COLORS.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.sm,
+    ...SHADOWS.small,
+  },
+  
   detailIcon: {
     fontSize: 16,
-    marginRight: SPACING.sm,
   },
+  
   detailText: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.TEXT_PRIMARY,
+    fontWeight: FONT_WEIGHT.medium,
     flex: 1,
   },
+  
   cardFooter: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: SPACING.sm,
-    paddingTop: SPACING.sm,
+    paddingTop: SPACING.md,
     borderTopWidth: 1,
-    borderTopColor: COLORS.SURFACE,
+    borderTopColor: COLORS.BORDER,
   },
+  
+  priceContainer: {
+    backgroundColor: COLORS.PRIMARY + '15',
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.lg,
+  },
+  
   price: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
+    fontSize: FONT_SIZE.xl,
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.PRIMARY,
   },
-  phone: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
+  
+  phoneButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.GRAY_100,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.lg,
+    gap: SPACING.sm,
   },
+  
+  phoneIcon: {
+    fontSize: 16,
+  },
+  
+  phoneText: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.TEXT_PRIMARY,
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  
   notesContainer: {
-    marginTop: SPACING.sm,
-    padding: SPACING.sm,
-    backgroundColor: COLORS.SURFACE,
-    borderRadius: 8,
+    marginTop: SPACING.md,
+    padding: SPACING.md,
+    backgroundColor: COLORS.INFO + '10',
+    borderRadius: BORDER_RADIUS.lg,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.INFO,
   },
+  
   notesLabel: {
-    fontSize: FONT_SIZE.xs,
-    color: COLORS.TEXT_SECONDARY,
-    fontWeight: "600",
-    marginBottom: 4,
-  },
-  notesText: {
     fontSize: FONT_SIZE.sm,
+    color: COLORS.INFO,
+    fontWeight: FONT_WEIGHT.bold,
+    marginBottom: SPACING.xs,
+  },
+  
+  notesText: {
+    fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_PRIMARY,
     fontStyle: "italic",
+    lineHeight: 20,
   },
+  
+  // Empty state with gradient
   emptyContainer: {
     alignItems: "center",
-    marginTop: SPACING.xxl,
+    marginTop: SPACING.xxxl,
     padding: SPACING.xl,
   },
+  
+  emptyGradient: {
+    alignItems: "center",
+    padding: SPACING.xxxl,
+    borderRadius: BORDER_RADIUS.xxl,
+    borderWidth: 1,
+    borderColor: COLORS.PRIMARY + '20',
+  },
+  
   emptyIcon: {
     fontSize: 64,
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg,
   },
+  
   emptyText: {
-    fontSize: FONT_SIZE.lg,
-    color: COLORS.TEXT_SECONDARY,
-    fontWeight: "600",
-    marginBottom: 4,
+    fontSize: FONT_SIZE.xl,
+    color: COLORS.TEXT_PRIMARY,
+    fontWeight: FONT_WEIGHT.semibold,
+    marginBottom: SPACING.sm,
   },
+  
   emptySubtext: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_SECONDARY,
     textAlign: "center",
+    lineHeight: 22,
   },
+  
+  // Modal styles with glassmorphism
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: COLORS.BACKDROP,
     justifyContent: "flex-end",
   },
+  
   modalContent: {
-    backgroundColor: COLORS.CARD,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: "80%",
+    backgroundColor: COLORS.WHITE,
+    borderTopLeftRadius: BORDER_RADIUS.xxl,
+    borderTopRightRadius: BORDER_RADIUS.xxl,
+    maxHeight: "85%",
+    position: 'relative',
+    overflow: 'hidden',
   },
+  
+  modalGlass: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+    backgroundColor: 'rgba(99, 102, 241, 0.05)',
+    borderTopLeftRadius: BORDER_RADIUS.xxl,
+    borderTopRightRadius: BORDER_RADIUS.xxl,
+  },
+  
   modalHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: SPACING.lg,
+    padding: SPACING.xl,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.SURFACE,
+    borderBottomColor: COLORS.BORDER,
+    zIndex: 1,
   },
+  
   modalTitle: {
-    fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
+    fontSize: FONT_SIZE.xxl,
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.TEXT_PRIMARY,
   },
+  
+  closeButtonContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: BORDER_RADIUS.full,
+    backgroundColor: COLORS.GRAY_100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
   closeButton: {
-    fontSize: FONT_SIZE.xl,
+    fontSize: 18,
     color: COLORS.TEXT_SECONDARY,
-    fontWeight: "bold",
+    fontWeight: FONT_WEIGHT.bold,
   },
+  
   modalBody: {
-    padding: SPACING.lg,
+    padding: SPACING.xl,
   },
+  
   modalSection: {
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.xl,
   },
+  
   modalServiceTitle: {
-    fontSize: FONT_SIZE.lg,
-    fontWeight: "bold",
-    color: COLORS.TEXT_PRIMARY,
-    marginBottom: SPACING.sm,
-  },
-  modalCustomer: {
-    fontSize: FONT_SIZE.md,
-    color: COLORS.TEXT_SECONDARY,
-    marginBottom: SPACING.sm,
-  },
-  modalDetail: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
-    marginBottom: 4,
-  },
-  modalPrice: {
     fontSize: FONT_SIZE.xl,
-    fontWeight: "bold",
-    color: COLORS.PRIMARY,
-    marginTop: SPACING.sm,
-  },
-  modalSectionTitle: {
-    fontSize: FONT_SIZE.md,
-    fontWeight: "600",
+    fontWeight: FONT_WEIGHT.bold,
     color: COLORS.TEXT_PRIMARY,
     marginBottom: SPACING.sm,
   },
+  
+  modalCustomer: {
+    fontSize: FONT_SIZE.lg,
+    color: COLORS.TEXT_SECONDARY,
+    marginBottom: SPACING.sm,
+    fontWeight: FONT_WEIGHT.medium,
+  },
+  
+  modalDetail: {
+    fontSize: FONT_SIZE.md,
+    color: COLORS.TEXT_SECONDARY,
+    marginBottom: SPACING.xs,
+    lineHeight: 22,
+  },
+  
+  modalPrice: {
+    fontSize: FONT_SIZE.xxl,
+    fontWeight: FONT_WEIGHT.bold,
+    color: COLORS.PRIMARY,
+    marginTop: SPACING.md,
+  },
+  
+  modalSectionTitle: {
+    fontSize: FONT_SIZE.lg,
+    fontWeight: FONT_WEIGHT.semibold,
+    color: COLORS.TEXT_PRIMARY,
+    marginBottom: SPACING.md,
+  },
+  
   modalNotes: {
-    fontSize: FONT_SIZE.sm,
+    fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_SECONDARY,
     fontStyle: "italic",
-    padding: SPACING.sm,
-    backgroundColor: COLORS.SURFACE,
-    borderRadius: 8,
+    padding: SPACING.md,
+    backgroundColor: COLORS.GRAY_50,
+    borderRadius: BORDER_RADIUS.lg,
+    lineHeight: 20,
   },
+  
   modalActions: {
-    gap: SPACING.sm,
+    gap: SPACING.md,
   },
+  
   actionButton: {
-    paddingVertical: SPACING.md,
-    borderRadius: 12,
+    paddingVertical: SPACING.lg,
+    borderRadius: BORDER_RADIUS.lg,
     alignItems: "center",
+    ...SHADOWS.medium,
   },
+  
   acceptButton: {
     backgroundColor: COLORS.SUCCESS,
   },
+  
   declineButton: {
     backgroundColor: COLORS.ERROR,
   },
+  
   rescheduleButton: {
-    backgroundColor: "#3b82f6",
+    backgroundColor: COLORS.INFO,
   },
+  
   completeButton: {
     backgroundColor: COLORS.PRIMARY,
   },
+  
   reminderButton: {
-    backgroundColor: "#f59e0b",
+    backgroundColor: COLORS.WARNING,
   },
+  
   calendarButton: {
-    backgroundColor: "#8b5cf6",
+    backgroundColor: '#8b5cf6',
   },
+  
   actionButtonText: {
-    color: COLORS.CARD,
-    fontSize: FONT_SIZE.md,
-    fontWeight: "bold",
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: FONT_WEIGHT.bold,
   },
+  
+  // Reschedule modal
   rescheduleModal: {
-    backgroundColor: COLORS.CARD,
-    borderRadius: 16,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: BORDER_RADIUS.xxl,
     padding: SPACING.xl,
     margin: SPACING.xl,
+    position: 'relative',
+    overflow: 'hidden',
+    ...SHADOWS.large,
   },
+  
   inputGroup: {
-    marginBottom: SPACING.md,
+    marginBottom: SPACING.lg,
   },
+  
   inputLabel: {
-    fontSize: FONT_SIZE.sm,
-    color: COLORS.TEXT_SECONDARY,
-    marginBottom: SPACING.sm,
-    fontWeight: "600",
-  },
-  input: {
-    backgroundColor: COLORS.SURFACE,
-    borderRadius: 8,
-    padding: SPACING.md,
     fontSize: FONT_SIZE.md,
     color: COLORS.TEXT_PRIMARY,
+    marginBottom: SPACING.sm,
+    fontWeight: FONT_WEIGHT.semibold,
   },
+  
+  input: {
+    backgroundColor: COLORS.GRAY_50,
+    borderRadius: BORDER_RADIUS.lg,
+    padding: SPACING.lg,
+    fontSize: FONT_SIZE.md,
+    color: COLORS.TEXT_PRIMARY,
+    borderWidth: 2,
+    borderColor: COLORS.BORDER,
+  },
+  
   rescheduleActions: {
     flexDirection: "row",
     gap: SPACING.md,
-    marginTop: SPACING.md,
+    marginTop: SPACING.lg,
   },
+  
+  rescheduleButton: {
+    flex: 1,
+    borderRadius: BORDER_RADIUS.lg,
+    overflow: 'hidden',
+  },
+  
   cancelReschedule: {
-    flex: 1,
-    backgroundColor: COLORS.SURFACE,
+    backgroundColor: COLORS.GRAY_100,
   },
+  
   confirmReschedule: {
-    flex: 1,
-    backgroundColor: COLORS.PRIMARY,
+    // Gradient will be applied
   },
+  
+  confirmRescheduleGradient: {
+    paddingVertical: SPACING.lg,
+    alignItems: 'center',
+  },
+  
   cancelRescheduleText: {
     color: COLORS.TEXT_SECONDARY,
-    fontSize: FONT_SIZE.md,
-    fontWeight: "bold",
+    fontSize: FONT_SIZE.lg,
+    fontWeight: FONT_WEIGHT.bold,
     textAlign: "center",
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.lg,
   },
+  
   confirmRescheduleText: {
-    color: COLORS.CARD,
-    fontSize: FONT_SIZE.md,
-    fontWeight: "bold",
-    textAlign: "center",
-    paddingVertical: SPACING.md,
+    color: COLORS.WHITE,
+    fontSize: FONT_SIZE.lg,
+    fontWeight: FONT_WEIGHT.bold,
   },
 });
